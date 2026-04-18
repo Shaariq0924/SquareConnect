@@ -1,0 +1,184 @@
+/* ==========================================================================
+   FLEET PAGE STYLES
+   ========================================================================== */
+
+.fleet-hero {
+  position: relative;
+  width: 100%;
+  padding: 160px 0 100px;
+  background-color: #fcfaff; /* matched from screenshot logic/theme */
+  text-align: center;
+  overflow: hidden;
+}
+
+.fleet-hero-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.fleet-title {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--primary-light);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.fleet-description {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   CHOOSE YOUR VEHICLE SECTION
+   -------------------------------------------------------------------------- */
+
+.fleet-grid-section {
+  padding: 100px 0 120px;
+  background: white;
+  text-align: center;
+}
+
+.fleet-grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.fleet-grid-header {
+  margin-bottom: 60px;
+}
+
+.fleet-grid-header h2 {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--primary-light);
+  margin-bottom: 16px;
+}
+
+.fleet-grid-header p {
+  font-size: 18px;
+  color: var(--gray-600);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Reuse existing vehicle card styling conceptually */
+.fleet-vehicle-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fleet-vehicle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.fleet-vehicle-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
+
+.fleet-vehicle-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #fdfbff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fleet-vehicle-emoji {
+  font-size: 100px;
+}
+
+.fleet-vehicle-specs {
+  display: flex;
+  gap: 20px;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.fleet-v-spec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fleet-book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.fleet-book-btn:hover {
+  background: var(--primary);
+  color: white;
+  opacity: 0.95;
+}
+
+/* Scroll Animation Base */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 991px) {
+  .fleet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .fleet-title {
+    font-size: 36px;
+  }
+  .fleet-hero {
+    padding: 120px 0 60px;
+  }
+}

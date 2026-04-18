@@ -1,0 +1,133 @@
+/* ==========================================================================
+   BOOKING PAGE
+   ========================================================================== */
+
+.booking-page {
+  flex: 1;
+  background-color: #fdf2f8; /* Soft pinkish background like the screenshot */
+  padding: 80px 24px;
+}
+
+.booking-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.booking-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 48px;
+  letter-spacing: -0.5px;
+}
+
+.booking-form-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-label span {
+  color: #ef4444;
+  margin-left: 4px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #7c3aed;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.booking-submit-btn {
+  background-color: #00365a; /* Deep blue like the screenshot */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 40px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
+.booking-submit-btn:hover {
+  background-color: #002d4b;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .booking-page {
+    padding: 100px 16px 40px !important;
+  }
+  
+  .booking-form-card {
+    padding: 24px 16px !important;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  .booking-title {
+    font-size: 26px !important;
+    margin-bottom: 32px !important;
+  }
+  
+  .form-label {
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+  
+  .form-label span {
+    margin-left: 4px !important;
+    display: inline-block !important;
+  }
+}
+

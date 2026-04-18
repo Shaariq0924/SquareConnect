@@ -1,0 +1,43 @@
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.6);
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 24px;
+    /* Move it away from Whatsapp Icon if they clash */
+    right: 24px; 
+    width: 42px;
+    height: 42px;
+  }
+}
