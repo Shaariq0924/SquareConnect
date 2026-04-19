@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import WhatsappIcon from "./components/WhatsappIcon";
 
 import BackToTop from "./components/BackToTop";
+import Chatbot from "./components/Chatbot";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Footer />
         <WhatsappIcon />
         <BackToTop />
+        <Chatbot />
       </body>
     </html>
   );

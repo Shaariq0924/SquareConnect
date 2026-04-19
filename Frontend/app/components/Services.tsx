@@ -302,9 +302,10 @@ const commonRequests = [
 ];
 
 const vehicleOptions = [
-  { id: "seater-7", title: "7 Seater", passengers: "7 Passengers", bags: "8 Bags", emoji: "🚐", image: "https://www.pngmart.com/files/22/Kia-Carnival-PNG-Photo.png" },
-  { id: "suv", title: "SUV", passengers: "4 Passengers", bags: "1-5 Bags", emoji: "🚙", image: "https://www.pngmart.com/files/22/Toyota-RAV4-PNG.png" },
-  { id: "seater-11", title: "11 Seater", passengers: "11 Passengers", bags: "16 Bags", emoji: "🚍", image: "https://www.pngmart.com/files/22/Mercedes-Benz-Sprinter-PNG.png" },
+  { id: "premium", title: "Premium Sedan", passengers: "4 Passengers", bags: "4 Bags", emoji: "🚗", image: "/assets/Sedan.jpg" },
+  { id: "seater-7", title: "7 Seater", passengers: "7 Passengers", bags: "8 Bags", emoji: "🚐", image: "/assets/SevenSeater.webp" },
+  { id: "suv", title: "SUV", passengers: "4 Passengers", bags: "1-5 Bags", emoji: "🚙", image: "/assets/PremiumSUV.jpg" },
+  { id: "seater-11", title: "11 Seater", passengers: "11 Passengers", bags: "16 Bags", emoji: "🚍", image: "/assets/ElevenSeater.jpg" },
 ];
 
 // ==========================================
@@ -613,37 +614,37 @@ export default function Services({ serviceType }: ServicesProps) {
       )}
 
       {/* 5. VEHICLES SLIDER SECTION */}
-      <section className="vehicles-slider-section" style={{ background: '#fdfbff', padding: '100px 0' }}>
-        <div className="vehicles-slider-container animate-on-scroll" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px', display: 'flex', alignItems: 'center', gap: '60px' }}>
-          <div className="vehicles-controls" style={{ flex: '0.8' }}>
-            <h2 style={{ fontSize: '38px', fontWeight: 800, color: '#a371c6', lineHeight: 1.2, marginBottom: '30px' }}>Our Vehicles<br/>With Car Seats</h2>
-            <div className="slider-arrows" style={{ display: 'flex', gap: '16px' }}>
-              <button onClick={prevVehicle} className="slider-btn" style={{ background: '#eabced', color: 'white', width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: 'none', transition: 'all 0.3s ease' }}><ChevronLeft size={24} /></button>
-              <button onClick={nextVehicle} className="slider-btn" style={{ background: '#eabced', color: 'white', width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: 'none', transition: 'all 0.3s ease' }}><ChevronRight size={24} /></button>
+      <section className="vehicles-slider-section">
+        <div className="vehicles-slider-container animate-on-scroll">
+          <div className="vehicles-controls">
+            <h2>Our Vehicles<br/>With Car Seats</h2>
+            <div className="slider-arrows">
+              <button onClick={prevVehicle} className="slider-btn"><ChevronLeft size={24} /></button>
+              <button onClick={nextVehicle} className="slider-btn"><ChevronRight size={24} /></button>
             </div>
           </div>
 
-          <div className="vehicles-cards-container" style={{ flex: '2', overflow: 'hidden' }}>
+          <div className="vehicles-cards-container">
             <div 
               className="vehicles-track" 
-              style={{ display: 'flex', transition: 'transform 0.5s ease-in-out', transform: `translateX(-${currentVehicle * (100 / vehicleOptions.length)}%)` }}
+              style={{ transform: `translateX(-${currentVehicle * (100 / vehicleOptions.length)}%)` }}
             >
               {vehicleOptions.map((v) => (
-                <div key={v.id} className="vehicle-card-wrapper" style={{ minWidth: '50%', padding: '10px', boxSizing: 'border-box' }}>
-                  <div className="vehicle-card" style={{ background: 'white', borderRadius: '20px', padding: '30px', boxShadow: '0 10px 40px rgba(0, 0, 0, 0.04)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <span className="vehicle-type-label" style={{ fontSize: '20px', fontWeight: 700, color: '#a371c6', alignSelf: 'flex-start', marginBottom: '20px' }}>{v.title}</span>
-                    <div className="vehicle-image-box" style={{ width: '100%', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', padding: '10px' }}>
+                <div key={v.id} className="vehicle-card-wrapper">
+                  <div className="vehicle-card">
+                    <span className="vehicle-type-label">{v.title}</span>
+                    <div className="vehicle-image-box">
                       {v.image ? (
                         <img src={v.image} alt={v.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       ) : (
-                        <span className="vehicle-emoji" style={{ fontSize: '80px' }}>{v.emoji}</span>
+                        <span className="vehicle-emoji">{v.emoji}</span>
                       )}
                     </div>
-                    <div className="vehicle-specs" style={{ display: 'flex', gap: '30px', color: '#8853a8', fontWeight: 600, fontSize: '14px', marginBottom: '30px', width: '100%', justifyContent: 'center' }}>
-                      <span className="v-spec" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Users size={18} color="#cd5ec1" /> {v.passengers}</span>
-                      <span className="v-spec" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Briefcase size={18} color="#cd5ec1" /> {v.bags}</span>
+                    <div className="vehicle-specs">
+                      <span className="v-spec"><Users size={18} color="var(--primary)" /> {v.passengers}</span>
+                      <span className="v-spec"><Briefcase size={18} color="var(--primary)" /> {v.bags}</span>
                     </div>
-                    <Link href="/book" className="vehicle-book-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '14px', background: 'white', color: '#974ab6', border: '1px solid #d4a9ea', borderRadius: '12px', fontWeight: 700, fontSize: '15px' }}>
+                    <Link href="/book" className="vehicle-book-btn">
                       Book Service Now <ArrowRight size={16} />
                     </Link>
                   </div>
@@ -790,7 +791,7 @@ export default function Services({ serviceType }: ServicesProps) {
           <div className="cruise-terminals-container animate-on-scroll" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
             <h2 style={{ fontSize: '38px', fontWeight: 800, color: '#c1adff', textAlign: 'center', marginBottom: '60px' }}>Serving Both Sydney Cruise Terminals</h2>
             
-            <div className="terminals-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '40px' }}>
+            <div className="terminals-grid">
               {cruiseTerminals.map((term, i) => (
                 <div key={i} className="terminal-card group" style={{ background: 'white', borderRadius: '24px', padding: '30px', boxShadow: '0 15px 50px rgba(0,0,0,0.04)', border: '1px solid rgba(124, 58, 237, 0.08)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   <div className="terminal-header" style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>

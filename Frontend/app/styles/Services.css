@@ -166,6 +166,25 @@
   .service-info-text { max-width: 100%; }
 }
 
+@media (max-width: 767px) {
+  .vehicle-book-btn { font-size: 14px; padding: 12px; }
+}
+
+/* --------------------------------------------------------------------------
+   8. CRUISE TERMINALS GRID
+   -------------------------------------------------------------------------- */
+
+.terminals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 991px) {
+  .vehicles-slider-container { flex-direction: column; gap: 40px; }
+  .terminals-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 640px) {
   .service-hero { padding: 100px 0 60px; }
   .service-title { font-size: 32px; }
@@ -702,7 +721,7 @@
 }
 
 .slider-btn {
-  background: var(--accent);
+  background: var(--primary);
   color: white;
   border: none;
   width: 50px;
@@ -741,6 +760,7 @@
 }
 
 .vehicle-card {
+  height: 100%;
   background: white;
   border-radius: 20px;
   padding: 30px;
@@ -792,6 +812,7 @@
 }
 
 .vehicle-book-btn {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: center;
