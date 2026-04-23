@@ -19,7 +19,7 @@ const navLinks = [
     ],
   },
   { name: "Fleet", href: "/fleet" },
-  { name: "Blog", href: "/blog" },
+  { name: "Policies", href: "/terms" },
   { name: "Contact Us", href: "/contact" },
 ];
 

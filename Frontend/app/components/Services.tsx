@@ -382,11 +382,27 @@ export default function Services({ serviceType }: ServicesProps) {
     setCurrentVehicle((prev) => (prev - 1 + vehicleOptions.length) % vehicleOptions.length);
   };
 
+  // Helper to highlight parts of the title
+  const HighlightTitle = ({ text }: { text: string }) => {
+    if (!text) return null;
+    const parts = text.split(" ");
+    if (parts.length <= 1) return <span>{text}</span>;
+    // Highlight the last 2-3 words for a modern look
+    const highlightCount = parts.length > 5 ? 3 : 2;
+    const mainText = parts.slice(0, parts.length - highlightCount).join(" ");
+    const highlightedPart = parts.slice(parts.length - highlightCount).join(" ");
+    return (
+      <>
+        {mainText} <span className="heading-highlight">{highlightedPart}</span>
+      </>
+    );
+  };
+
   // --- Reusable Renders ---
   const renderDifferenceContent = () => (
     <div className={`service-difference-content ${data.difference.isImageRight ? "pr-10" : "pl-10"}`}>
       <h2 className="service-difference-heading" style={{ textAlign: 'left', marginBottom: '30px' }}>
-        {data.difference.heading}
+        <HighlightTitle text={data.difference.heading} />
       </h2>
       
       {data.difference.texts.map((text: string, i: number) => (
@@ -508,9 +524,9 @@ export default function Services({ serviceType }: ServicesProps) {
       {data.chooseUs.cards && data.chooseUs.cards.length > 0 && (
         <section className="choose-us-section" style={serviceType === 'hospital' ? { background: '#fdfbff', paddingTop: '80px', paddingBottom: '80px' } : {}}>
           <div className="choose-us-container animate-on-scroll">
-            <div className="choose-us-header" style={serviceType === 'hospital' ? { marginBottom: '40px' } : {}}>
-              <h2 style={serviceType === 'hospital' ? { fontSize: '32px' } : {}}>{data.chooseUs.heading}</h2>
-              <p className={serviceType === 'hospital' ? "max-w-3xl mx-auto" : ""}>{data.chooseUs.subheading}</p>
+            <div className="services-choose-header animate-on-scroll">
+              <h2><HighlightTitle text={data.chooseUs.heading} /></h2>
+              <p>{data.chooseUs.subheading}</p>
             </div>
 
             <div className="choose-us-grid">
@@ -538,9 +554,9 @@ export default function Services({ serviceType }: ServicesProps) {
       {data.babySeats.options && data.babySeats.options.length > 0 && (
         <section className="seat-options-section" style={serviceType === 'hospital' ? { paddingTop: '100px' } : {}}>
           <div className="seat-options-container animate-on-scroll">
-            <div className="seat-options-header">
-              <h2>{data.babySeats.heading}</h2>
-              <p className={serviceType === 'hospital' ? "max-w-3xl mx-auto" : ""}>{data.babySeats.subheading}</p>
+            <div className="seat-options-header animate-on-scroll">
+              <h2><HighlightTitle text={data.babySeats.heading} /></h2>
+              <p>{data.babySeats.subheading}</p>
             </div>
 
             <div className="seat-options-carousel-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
@@ -616,8 +632,8 @@ export default function Services({ serviceType }: ServicesProps) {
       {/* 5. VEHICLES SLIDER SECTION */}
       <section className="vehicles-slider-section">
         <div className="vehicles-slider-container animate-on-scroll">
-          <div className="vehicles-controls">
-            <h2>Our Vehicles<br/>With Car Seats</h2>
+          <div className="vehicles-header animate-on-scroll">
+            <h2>Our Vehicles<br/><span className="heading-highlight">With Car Seats</span></h2>
             <div className="slider-arrows">
               <button onClick={prevVehicle} className="slider-btn"><ChevronLeft size={24} /></button>
               <button onClick={nextVehicle} className="slider-btn"><ChevronRight size={24} /></button>
@@ -670,7 +686,9 @@ export default function Services({ serviceType }: ServicesProps) {
         <section className="airport-checklist-section" style={{ background: '#fdfbff', paddingBottom: '120px', marginTop: '60px' }}>
           <div className="airport-checklist-container animate-on-scroll">
             <div className="text-center mb-16">
-              <h2 className="checklist-main-title mb-6" style={{ marginBottom: '16px' }}>We Cover All Major Sydney Hospitals</h2>
+              <h2 className="checklist-main-title mb-6" style={{ marginBottom: '16px' }}>
+                <HighlightTitle text="We Cover All Major Sydney Hospitals" />
+              </h2>
               <p className="text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed">Wherever your appointment or admission is, SquareConnect provides reliable Sydney hospital transfers with child seat across Sydney.</p>
             </div>
             

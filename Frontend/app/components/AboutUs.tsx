@@ -31,7 +31,7 @@ export default function AboutUs() {
       <section className="about-hero" id="about-hero">
         <div className="about-hero-content">
           <h1 className="about-hero-title">
-            Your Trusted Transport Partner Across Australia
+            Your Trusted <span className="heading-highlight">Transport Partner</span> Across Australia
           </h1>
           <p className="about-hero-subtitle">
             At SquareConnect, we put passengers first. Our modern fleet and
@@ -46,7 +46,7 @@ export default function AboutUs() {
       <section className="about-section" id="about-section">
         <div className="about-section-container">
           <div className="about-text">
-            <h2 className="about-text-title">About SquareConnect</h2>
+            <h2 className="about-text-title">About <span className="heading-highlight">SquareConnect</span></h2>
             <p className="about-text-para">
               SquareConnect is a Australian transport company committed
               to safe and reliable travel for individuals, families, and corporate
@@ -84,7 +84,7 @@ export default function AboutUs() {
       {/* Why Choose Us */}
       <section className="about-highlights" id="about-highlights">
         <div className="about-highlights-container">
-          <h2 className="about-highlights-title">Why Choose SquareConnect?</h2>
+          <h2 className="about-highlights-title">Why Choose <span className="heading-highlight">SquareConnect?</span></h2>
           <div className="about-highlights-grid">
             {highlights.map((item) => (
               <div className="highlight-card" key={item.title} id={`highlight-${item.title.toLowerCase().replace(/\s/g, "-")}`}>

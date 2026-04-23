@@ -67,7 +67,7 @@ export default function ContactUs() {
       {/* Hero Banner */}
       <section className="contact-hero" id="contact-hero">
         <div className="contact-hero-content">
-          <h1 className="contact-hero-title">Contact SquareConnect</h1>
+          <h1 className="contact-hero-title">Contact <span className="heading-highlight">SquareConnect</span></h1>
           <p className="contact-hero-subtitle">
             Get in touch with the right team for faster assistance
           </p>
@@ -79,7 +79,7 @@ export default function ContactUs() {
         <div className="contact-body-container">
           {/* Left - Contact Info */}
           <div className="contact-info" id="contact-info">
-            <h2 className="contact-info-title">Contact Us</h2>
+            <h2 className="contact-info-title"><span className="heading-highlight">Contact</span> Us</h2>
 
             <div className="contact-info-cards">
               <div className="contact-card" id="contact-card-phone">
@@ -127,7 +127,7 @@ export default function ContactUs() {
           </div>
 
           <div className="contact-form-wrapper" id="contact-form-wrapper">
-            <h2 className="contact-form-title">Get In Touch</h2>
+            <h2 className="contact-form-title">Get In <span className="heading-highlight">Touch</span></h2>
             {successMsg && <div className="p-4 mb-4 text-green-800 bg-green-100 rounded-lg">{successMsg}</div>}
             {errorMsg && <div className="p-4 mb-4 text-red-800 bg-red-100 rounded-lg">{errorMsg}</div>}
             <form className="contact-form" id="contact-form" onSubmit={handleSubmit}>

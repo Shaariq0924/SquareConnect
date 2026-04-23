@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, ChevronRight, ChevronLeft, Users, Briefcase } from "lucide-react";
+import { Phone, ChevronRight, ChevronLeft, Users, Briefcase, Check } from "lucide-react";
 import "../styles/landing.css";
 
 const servicesFeatures = [
@@ -81,35 +81,59 @@ const familyServiceCards = [
 const fleetVehicles = [
   {
     id: "premium",
-    title: "Premium",
-    passengers: "7 Passengers",
-    bags: "7 Bags",
+    title: "Premium Sedan",
+    passengers: "4 Passengers",
+    bags: "4 Bags",
     image: "/assets/Sedan.jpg",
     emoji: "🚗",
-  },
-  {
-    id: "seater-7",
-    title: "7 Seater",
-    passengers: "7 Passengers",
-    bags: "8 Bags",
-    image: "/assets/SevenSeater.webp",
-    emoji: "🚐",
+    features: [
+      "Ideal for small families or solo travelers",
+      "Professional airport & city transfers",
+      "Smooth, quiet ride with climate control",
+      "Baby seat & booster options available"
+    ]
   },
   {
     id: "suv",
-    title: "SUV",
+    title: "Premium SUV",
     passengers: "4 Passengers",
     bags: "1-5 Bags",
     image: "/assets/PremiumSUV.jpg",
     emoji: "🚙",
+    features: [
+      "Extra legroom & premium cabin comfort",
+      "Perfect for corporate or luxury family travel",
+      "Flexible cargo capacity for multiple bags",
+      "High-safety child restraints provided"
+    ]
+  },
+  {
+    id: "seater-7",
+    title: "7 Seater Maxi",
+    passengers: "7 Passengers",
+    bags: "8 Bags",
+    image: "/assets/SevenSeater.webp",
+    emoji: "🚐",
+    features: [
+      "Fits larger families or groups with kids",
+      "Air conditioning & luggage space included",
+      "Baby seats available on request",
+      "Reliable option for school & daycare runs"
+    ]
   },
   {
     id: "seater-11",
-    title: "11 Seater",
+    title: "11 Seater Maxi",
     passengers: "11 Passengers",
     bags: "16 Bags",
     image: "/assets/ElevenSeater.jpg",
     emoji: "🚍",
+    features: [
+      "Best for large group transfers or events",
+      "Massive luggage space for up to 16 bags",
+      "Spacious seating for 11 adult passengers",
+      "Great for airport or day-tour groups"
+    ]
   },
 ];
 
@@ -122,15 +146,6 @@ const differenceFeatures = [
 
 export default function Main() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentFleetIndex, setCurrentFleetIndex] = useState(0);
-
-  const nextFleet = () => {
-    setCurrentFleetIndex((prev) => (prev + 1) % fleetVehicles.length);
-  };
-
-  const prevFleet = () => {
-    setCurrentFleetIndex((prev) => (prev - 1 + fleetVehicles.length) % fleetVehicles.length);
-  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -355,7 +370,11 @@ export default function Main() {
             </ul>
 
             <div className="why-choose-image-card wc-animate wc-right wc-delay-10">
-              <span className="why-choose-image-emoji">🚐</span>
+              <img 
+                src="/assets/ElevenSeater.jpg" 
+                alt="SquareConnect Eleven Seater" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+              />
             </div>
 
             <p className="why-choose-bottom-text wc-animate wc-right wc-delay-11">
@@ -475,68 +494,44 @@ export default function Main() {
             <h2>Our <span className="heading-highlight">Fleet</span></h2>
           </div>
 
-          <div className="fleet-slider-wrapper">
-            <button className="fleet-nav-btn prev" onClick={prevFleet} aria-label="Previous Vehicle">
-              <ChevronLeft size={24} />
-            </button>
-
-            <div className="fleet-slider-content" style={{ overflow: "hidden" }}>
-              <div 
-                className="fleet-grid" 
-                style={{ 
-                  display: "flex",
-                  width: `${fleetVehicles.length * 100}%`,
-                  transition: "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)",
-                  transform: `translateX(-${(currentFleetIndex * 100) / fleetVehicles.length}%)` 
-                }}
-              >
-                {fleetVehicles.map((vehicle, index) => (
-                  <div 
-                    key={vehicle.id} 
-                    className="fleet-card-container"
-                    style={{ 
-                      width: `${100 / fleetVehicles.length}%`, 
-                      flexBasis: `${100 / fleetVehicles.length}%`, 
-                      flexShrink: 0 
-                    }}
-                  >
-                    <div className={`fleet-card ${index === currentFleetIndex ? "active" : ""}`}>
-                      <span className="fleet-card-title">{vehicle.title}</span>
-                      <div className="fleet-card-image">
-                        {vehicle.image ? (
-                          <Image src={vehicle.image} alt={vehicle.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
-                        ) : (
-                          <span className="fleet-emoji">{vehicle.emoji}</span>
-                        )}
-                      </div>
-                      <div className="fleet-card-specs">
-                        <div className="fleet-spec">
-                          <Users size={16} />
-                          <span>{vehicle.passengers}</span>
-                        </div>
-                        <div className="fleet-spec">
-                          <Briefcase size={16} />
-                          <span>{vehicle.bags}</span>
-                        </div>
-                      </div>
+          <div className="fleet-grid">
+            {fleetVehicles.map((vehicle) => (
+              <div key={vehicle.id} className="fleet-card active">
+                <span className="fleet-card-title">{vehicle.title}</span>
+                <div className="fleet-card-image">
+                  {vehicle.image ? (
+                    <img 
+                      src={vehicle.image} 
+                      alt={vehicle.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                    />
+                  ) : (
+                    <span className="fleet-emoji">{vehicle.emoji}</span>
+                  )}
+                  {vehicle.features && (
+                    <div className="fleet-card-overlay">
+                      <ul className="fleet-features-list">
+                        {vehicle.features.map((feature, i) => (
+                          <li key={i} className="fleet-feature-item">
+                            <Check size={14} className="feature-check-icon" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
+                  )}
+                </div>
+                <div className="fleet-card-specs">
+                  <div className="fleet-spec">
+                    <Users size={16} />
+                    <span>{vehicle.passengers}</span>
                   </div>
-                ))}
+                  <div className="fleet-spec">
+                    <Briefcase size={16} />
+                    <span>{vehicle.bags}</span>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <button className="fleet-nav-btn next" onClick={nextFleet} aria-label="Next Vehicle">
-              <ChevronRight size={24} />
-            </button>
-          </div>
-
-          <div className="fleet-dots">
-            {fleetVehicles.map((_, index) => (
-              <span
-                key={index}
-                className={`fleet-dot ${index === currentFleetIndex ? "active" : ""}`}
-                onClick={() => setCurrentFleetIndex(index)}
-              ></span>
             ))}
           </div>
         </div>

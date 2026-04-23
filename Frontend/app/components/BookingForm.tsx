@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import "../styles/booking.css";
 
@@ -24,6 +24,23 @@ export default function BookingForm() {
   const [errorMsg, setErrorMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState<any>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -71,7 +88,6 @@ Baby Seat: ${formData.babySeat === "yes" ? formData.babySeatType : "No"}`;
       const whatsappUrl = `https://wa.me/61423699909?text=${encodeURIComponent(message)}`;
 
       // Delay to let the user see the success animation layout.
-      // Used window.location.href instead of window.open to bypass strict mobile popup blockers.
       setTimeout(() => {
         window.location.href = whatsappUrl;
       }, 1500);
@@ -88,7 +104,7 @@ Baby Seat: ${formData.babySeat === "yes" ? formData.babySeatType : "No"}`;
     <div className="booking-page" id="booking-page">
       <div className="booking-container">
         <h1 className="booking-title" id="booking-title">
-          Book Now SquareConnect Sydney
+          Book Now <span className="heading-highlight">SquareConnect Sydney</span>
         </h1>
 
         <div className="booking-form-card" id="booking-form-card">
@@ -317,6 +333,75 @@ Baby Seat: ${formData.babySeat === "yes" ? formData.babySeatType : "No"}`;
             </button>
             </form>
           )}
+        </div>
+
+        {/* INFO SECTION */}
+        <div className="booking-info-section">
+          <div className="booking-intro-text animate-on-scroll">
+            <p>
+              Looking for a safe and reliable baby seat taxi Sydney? You are in the right place. 
+              SquareConnect makes it simple to book your next ride for airport transfers, hospital trips, school runs, or family travel anywhere in Sydney. 
+              We provide clean vehicles, child friendly drivers, and fixed fares so you always know what you are paying before you travel.
+            </p>
+            <p>
+              Use the booking form above to share your trip details. Our team will review your request 
+              and confirm your booking by SMS or email within minutes. You can relax knowing your ride is ready when you are.
+            </p>
+          </div>
+
+          <div className="why-choose-booking animate-on-scroll">
+            <h2 className="why-choose-title">
+              Why Choose <span className="heading-highlight">SquareConnect</span>
+            </h2>
+            <ul className="why-choose-list">
+              <li>
+                <strong>Safe baby seat taxis:</strong> Every SquareConnect vehicle includes a baby or child seat that meets Australian safety standards. Choose from rear facing, forward facing, or booster seats depending on your child&apos;s age.
+              </li>
+              <li>
+                <strong>Trusted Sydney drivers:</strong> Our local drivers are trained, licensed, and experienced in handling family transfers. They make sure your trip is smooth, safe, and comfortable from pickup to drop off.
+              </li>
+              <li>
+                <strong>24/7 availability:</strong> We operate day and night for all transfers across Sydney. Whether it is an early morning flight or a late night hospital pickup, we are always available.
+              </li>
+              <li>
+                <strong>Clean and spacious vehicles:</strong> Choose from sedans, SUVs, or vans depending on your group size. Each vehicle is cleaned, sanitised, and checked before every trip.
+              </li>
+              <li>
+                <strong>Instant confirmation:</strong> Once you submit your booking form, you will receive a confirmation message with your fare, driver details, and pickup time.
+              </li>
+            </ul>
+          </div>
+
+          <div className="how-to-book-section animate-on-scroll">
+            <h2 className="info-section-title">How to <span className="heading-highlight">Book</span></h2>
+            <ol className="how-to-book-list">
+              <li>Enter your pickup and drop off locations in the form.</li>
+              <li>Add your date, time, and number of passengers.</li>
+              <li>Choose the type of baby seat if needed.</li>
+              <li>Include special notes such as flight number, luggage details, or extra stops.</li>
+              <li>Submit the form and wait for confirmation.</li>
+            </ol>
+            <p className="call-note">
+              You can also call our 24/7 team on <strong>0423 699 909</strong> for direct bookings or quick questions.
+            </p>
+          </div>
+
+          <div className="fares-info-section animate-on-scroll">
+            <h2 className="info-section-title">Fixed <span className="heading-highlight">Fares</span> and Easy Payments</h2>
+            <p>
+              We provide fixed fares for all Sydney airport transfers and local trips. No hidden charges and all tolls are included. You can pay securely online or directly to the driver. Card payments include a small fee, while cash payments are accepted without any extra cost.
+            </p>
+          </div>
+
+          <div className="comfort-confidence-section animate-on-scroll">
+            <h2 className="info-section-title">Travel with <span className="heading-highlight">Comfort</span> and Confidence</h2>
+            <p>
+              From Sydney Airport transfers with baby seats to hospital or hotel pickups, SquareConnect is your trusted choice for safe family travel. Our focus is on reliability, comfort, and care for every passenger.
+            </p>
+            <p>
+              Fill out the booking form now to reserve your trip. Our friendly team will confirm your booking quickly so you can travel with peace of mind.
+            </p>
+          </div>
         </div>
       </div>
     </div>

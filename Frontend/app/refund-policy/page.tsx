@@ -22,7 +22,7 @@ export default function RefundPolicyPage() {
           </p>
           <h2 style={{ fontSize: "20px", color: "#111", marginTop: "32px", marginBottom: "16px" }}>2. Non-Refundable Situations</h2>
           <p style={{ marginBottom: "20px" }}>
-            We do not offer refunds if the passenger fails to show up at the designated time ("No Show"), or if the passenger cancels the ride outside the allowed cancellation window.
+            We do not offer refunds if the passenger fails to show up at the designated time (&quot;No Show&quot;), or if the passenger cancels the ride outside the allowed cancellation window.
           </p>
           <p style={{ fontStyle: "italic", marginTop: "40px", color: "#6b7280" }}>
             Last updated: April 2026. This is a placeholder document and should be updated by the administration.

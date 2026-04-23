@@ -4,7 +4,7 @@
 
 .booking-page {
   flex: 1;
-  background-color: #fdf2f8; /* Soft pinkish background like the screenshot */
+  background-color: #f5f3ff; /* Soft purplish background to match SquareConnect branding */
   padding: 80px 24px;
 }
 
@@ -98,9 +98,148 @@
   background-color: #002d4b;
 }
 
+/* ---- Info Section ---- */
+
+.booking-info-section {
+  margin-top: 60px;
+  color: #374151;
+}
+
+.booking-intro-text {
+  margin-bottom: 40px;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.booking-intro-text p {
+  margin-bottom: 20px;
+}
+
+.why-choose-booking,
+.how-to-book-section,
+.fares-info-section,
+.comfort-confidence-section {
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
+}
+
+.info-section-title,
+.why-choose-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--primary);
+}
+
+.why-choose-list,
+.how-to-book-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.why-choose-list li,
+.how-to-book-list li {
+  position: relative;
+  padding-left: 36px;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #4b5563;
+}
+
+.why-choose-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #7c3aed;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.how-to-book-list {
+  counter-reset: step-counter;
+}
+
+.how-to-book-list li::before {
+  counter-increment: step-counter;
+  content: counter(step-counter) ".";
+  position: absolute;
+  left: 0;
+  color: #7c3aed;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.why-choose-list li strong {
+  display: block;
+  font-size: 18px;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.call-note {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
+  font-size: 16px;
+  color: #374151;
+}
+
+.fares-info-section p,
+.comfort-confidence-section p {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+.comfort-confidence-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Scroll Animation Base (Re-use) ---- */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ---- Responsive ---- */
 
 @media (max-width: 1024px) {
+  .booking-info-section {
+    margin-top: 40px;
+  }
+  
+  .why-choose-booking,
+  .how-to-book-section,
+  .fares-info-section,
+  .comfort-confidence-section {
+    padding: 24px !important;
+    margin-bottom: 24px !important;
+  }
+  
+  .info-section-title,
+  .why-choose-title {
+    font-size: 24px !important;
+  }
+  
+  .why-choose-list li,
+  .how-to-book-list li {
+    font-size: 15px !important;
+  }
+  
   .booking-page {
     padding: 100px 16px 40px !important;
   }
