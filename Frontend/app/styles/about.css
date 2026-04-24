@@ -9,7 +9,7 @@
 /* ---- Hero ---- */
 
 .about-hero {
-  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #fdf2f8 100%);
+  background: var(--background);
   padding: 80px 24px 80px;
   text-align: center;
 }
@@ -22,7 +22,7 @@
 .about-hero-title {
   font-size: 38px;
   font-weight: 700;
-  color: #7c3aed;
+  color: var(--primary);
   letter-spacing: -1px;
   line-height: 1.2;
   margin-bottom: 16px;
@@ -30,7 +30,7 @@
 
 .about-hero-subtitle {
   font-size: 16px;
-  color: #4b5563;
+  color: var(--gray-600);
   line-height: 1.7;
   max-width: 680px;
   margin: 0 auto;
@@ -40,7 +40,7 @@
 
 .about-section {
   padding: 72px 24px;
-  background: #ffffff;
+  background: var(--background);
 }
 
 .about-section-container {
@@ -55,14 +55,14 @@
 .about-text-title {
   font-size: 28px;
   font-weight: 700;
-  color: #7c3aed;
+  color: var(--primary);
   margin-bottom: 20px;
   letter-spacing: -0.5px;
 }
 
 .about-text-para {
   font-size: 15px;
-  color: #4b5563;
+  color: var(--gray-600);
   line-height: 1.75;
   margin-bottom: 16px;
 }
@@ -77,13 +77,13 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 20px;
-  background: linear-gradient(135deg, #ede9fe 0%, #f3e8ff 50%, #fce7f3 100%);
+  background: var(--card-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  border: 1px solid rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--card-border);
 }
 
 .about-image-icon {
@@ -93,7 +93,7 @@
 .about-image-label {
   font-size: 14px;
   font-weight: 600;
-  color: #7c3aed;
+  color: var(--primary);
   opacity: 0.6;
 }
 
@@ -101,7 +101,7 @@
 
 .about-highlights {
   padding: 72px 24px 80px;
-  background: #f3f4f6;
+  background: var(--background);
 }
 
 .about-highlights-container {
@@ -112,7 +112,7 @@
 .about-highlights-title {
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  color: var(--foreground);
   text-align: center;
   margin-bottom: 44px;
   letter-spacing: -0.5px;
@@ -125,8 +125,8 @@
 }
 
 .highlight-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 28px 24px;
   text-align: center;
@@ -148,21 +148,21 @@
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
-  color: #7c3aed;
+  background: var(--gray-100);
+  color: var(--primary);
   margin-bottom: 16px;
 }
 
 .highlight-title {
   font-size: 16px;
   font-weight: 700;
-  color: #111827;
+  color: var(--foreground);
   margin-bottom: 8px;
 }
 
 .highlight-desc {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--gray-600);
   line-height: 1.6;
 }
 

@@ -4,7 +4,7 @@
 
 .booking-page {
   flex: 1;
-  background-color: #f5f3ff; /* Soft purplish background to match SquareConnect branding */
+  background-color: var(--background);
   padding: 80px 24px;
 }
 
@@ -17,16 +17,17 @@
   text-align: center;
   font-size: 36px;
   font-weight: 700;
-  color: #7c3aed;
+  color: var(--primary);
   margin-bottom: 48px;
   letter-spacing: -0.5px;
 }
 
 .booking-form-card {
-  background: #ffffff;
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
 }
 
 .booking-form {
@@ -44,7 +45,7 @@
 .form-label {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: var(--gray-700);
 }
 
 .form-label span {
@@ -56,11 +57,12 @@
 .form-select {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-200);
   border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
-  color: #1f2937;
+  color: var(--foreground);
+  background: var(--gray-100);
   outline: none;
   transition: border-color 150ms ease;
 }
@@ -102,7 +104,7 @@
 
 .booking-info-section {
   margin-top: 60px;
-  color: #374151;
+  color: var(--gray-700);
 }
 
 .booking-intro-text {
@@ -120,9 +122,10 @@
 .fares-info-section,
 .comfort-confidence-section {
   padding: 40px;
-  background: white;
+  background: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
   margin-bottom: 32px;
 }
 
@@ -149,7 +152,7 @@
   padding-left: 36px;
   line-height: 1.6;
   font-size: 16px;
-  color: #4b5563;
+  color: var(--gray-600);
 }
 
 .why-choose-list li::before {
@@ -178,23 +181,23 @@
 .why-choose-list li strong {
   display: block;
   font-size: 18px;
-  color: #111827;
+  color: var(--foreground);
   margin-bottom: 4px;
 }
 
 .call-note {
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--card-border);
   font-size: 16px;
-  color: #374151;
+  color: var(--gray-700);
 }
 
 .fares-info-section p,
 .comfort-confidence-section p {
   line-height: 1.8;
   font-size: 16px;
-  color: #4b5563;
+  color: var(--gray-600);
   margin-bottom: 16px;
 }
 
@@ -241,7 +244,7 @@
   }
   
   .booking-page {
-    padding: 100px 16px 40px !important;
+    padding: 130px 16px 40px !important;
   }
   
   .booking-form-card {

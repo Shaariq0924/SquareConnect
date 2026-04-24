@@ -9,7 +9,7 @@
 /* ---- Hero Banner ---- */
 
 .contact-hero {
-  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 50%, #fdf2f8 100%);
+  background: var(--background);
   padding: 80px 24px 80px;
   text-align: center;
 }
@@ -71,8 +71,8 @@
   gap: 16px;
   padding: 20px;
   border-radius: 14px;
-  background: #fff;
-  border: 1px solid var(--gray-200);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
@@ -90,21 +90,21 @@
   height: 48px;
   min-width: 48px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+  background: var(--gray-100);
   color: var(--primary);
 }
 
 .contact-card-details h3 {
   font-size: 15px;
   font-weight: 600;
-  color: var(--gray-800);
+  color: var(--foreground);
   margin-bottom: 4px;
 }
 
 .contact-card-details a,
 .contact-card-details p {
   font-size: 14px;
-  color: var(--gray-500);
+  color: var(--gray-600);
   text-decoration: none;
   line-height: 1.5;
   transition: color var(--transition-fast);
@@ -117,17 +117,17 @@
 /* ---- Contact Form ---- */
 
 .contact-form-wrapper {
-  background: #fff;
-  border: 1px solid var(--gray-200);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 36px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--card-shadow);
 }
 
 .contact-form-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--gray-900);
+  color: var(--foreground);
   margin-bottom: 28px;
   text-align: center;
 }
@@ -153,8 +153,8 @@
   border-radius: 10px;
   font-size: 14px;
   font-family: inherit;
-  color: var(--gray-800);
-  background: #fff;
+  color: var(--foreground);
+  background: var(--gray-100);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }

@@ -5,10 +5,13 @@
 .fleet-hero {
   position: relative;
   width: 100%;
-  padding: 160px 0 100px;
-  background-color: #fcfaff; /* matched from screenshot logic/theme */
+  padding: 200px 0 140px;
+  background: var(--background);
   text-align: center;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fleet-hero-container {
@@ -38,7 +41,7 @@
 
 .fleet-grid-section {
   padding: 100px 0 120px;
-  background: white;
+  background: var(--background);
   text-align: center;
 }
 
@@ -74,15 +77,15 @@
 
 /* Reuse existing vehicle card styling conceptually */
 .fleet-vehicle-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(124, 58, 237, 0.08);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .fleet-vehicle-card:hover {
@@ -101,7 +104,7 @@
 .fleet-vehicle-image {
   width: 100%;
   aspect-ratio: 4/3;
-  background: #fdfbff;
+  background: var(--gray-50);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,10 +162,21 @@
   opacity: 1;
 }
 
-.fleet-vehicle-card:hover .fleet-feature-item:nth-child(1) { transition-delay: 0.1s; }
-.fleet-vehicle-card:hover .fleet-feature-item:nth-child(2) { transition-delay: 0.15s; }
-.fleet-vehicle-card:hover .fleet-feature-item:nth-child(3) { transition-delay: 0.2s; }
-.fleet-vehicle-card:hover .fleet-feature-item:nth-child(4) { transition-delay: 0.25s; }
+.fleet-vehicle-card:hover .fleet-feature-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.fleet-vehicle-card:hover .fleet-feature-item:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+.fleet-vehicle-card:hover .fleet-feature-item:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.fleet-vehicle-card:hover .fleet-feature-item:nth-child(4) {
+  transition-delay: 0.25s;
+}
 
 .feature-check-icon {
   background: rgba(255, 255, 255, 0.2);
@@ -200,7 +214,7 @@
   gap: 10px;
   width: 100%;
   padding: 16px;
-  background: white;
+  background: transparent;
   color: var(--primary);
   border: 1px solid var(--primary);
   border-radius: 12px;
@@ -220,8 +234,8 @@
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -235,10 +249,12 @@
     grid-template-columns: 1fr;
   }
 }
+
 @media (max-width: 640px) {
   .fleet-title {
     font-size: 36px;
   }
+
   .fleet-hero {
     padding: 120px 0 60px;
   }

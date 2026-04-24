@@ -1,9 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Tree-shake lucide-react — only imported icons are bundled
-  experimental: {
-    optimizePackageImports: ["lucide-react"],
+
+  // Allow external image domains for next/image
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+      },
+    ],
   },
 
   // Skip type-checking during dev builds for speed

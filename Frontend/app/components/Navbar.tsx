@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X, Phone, Search } from "lucide-react";
+import { ChevronDown, Menu, X, Phone, Search, Sun, Moon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../styles/navbar.css";
 
 const navLinks = [
@@ -27,14 +28,32 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
+    // Initial theme check
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
   return (
     <header className="navbar-wrapper">
@@ -85,10 +104,27 @@ export default function Navbar() {
             )}
           </ul>
 
-          {/* Right Section — Search + CTA */}
+          {/* Right Section — Search + Theme + CTA */}
           <div className="navbar-cta" id="navbar-cta">
             <button className="nav-icon-btn" id="nav-search-btn" aria-label="Search">
               <Search size={20} />
+            </button>
+            <button
+              className="nav-icon-btn theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={theme}
+                  initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+                </motion.div>
+              </AnimatePresence>
             </button>
             <a href="tel:+61423699909" className="nav-icon-btn cta-phone-icon" id="cta-phone">
               <Phone size={20} />
@@ -99,18 +135,27 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            className="mobile-toggle"
-            id="mobile-menu-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="mobile-actions">
+             <button
+              className="nav-icon-btn theme-toggle mobile-theme-btn"
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+            >
+              {theme === "light" ? <Moon size={22} /> : <Sun size={22} />}
+            </button>
+            <button
+              className="mobile-toggle"
+              id="mobile-menu-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu MUST REMAIN COMPLETELY OUTSIDE .navbar SO IT IS NOT CLIPPED BY BACKDROP-FILTER/TRANSFORM BUGS ON IOS */}
+      {/* Mobile Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? "mobile-menu-open" : ""}`} id="mobile-menu">
         <ul className="mobile-nav-links">
           {navLinks.map((link) =>

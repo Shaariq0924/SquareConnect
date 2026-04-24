@@ -58,22 +58,58 @@
   --primary-light: #a78bfa;
   --accent: #f97316;
   --accent-dark: #ea580c;
+  --gray-50: #f9fafb;
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
   --gray-400: #9ca3af;
   --gray-500: #6b7280;
   --gray-600: #4b5563;
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px 0 var(--shadow-color);
+  --shadow-md: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+  --shadow-xl: 0 20px 25px -5px var(--shadow-color), 0 8px 10px -6px var(--shadow-color);
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  --vibrant-gradient: linear-gradient(135deg, #FF3399 0%, #7C3AED 100%);
+  --vibrant-gradient: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
+  --navbar-bg: rgba(255, 255, 255, 0.75);
+  --navbar-border: rgba(255, 255, 255, 0.6);
+  --card-bg: #ffffff;
+  --card-border: rgba(124, 58, 237, 0.1);
+  --card-shadow: 0 24px 64px rgba(124, 58, 237, 0.12);
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+}
+
+[data-theme='dark'] {
+  --background: #0b0e14;
+  --foreground: #f1f5f9;
+  --primary: #a78bfa;
+  --primary-dark: #8b5cf6;
+  --primary-light: #ddd6fe;
+  --gray-50: #1a1e26;
+  --gray-100: #1e2532;
+  --gray-200: #2d3648;
+  --gray-300: #475569;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #94a3b8;
+  --gray-700: #cbd5e1;
+  --gray-800: #e2e8f0;
+  --gray-900: #f1f5f9;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --navbar-bg: rgba(11, 14, 20, 0.85);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  --card-bg: #161b26;
+  --card-border: rgba(167, 139, 250, 0.15);
+  --card-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --input-bg: #1e2532;
+  --input-border: #2d3648;
 }
 
 /* Global Heading Highlight Class */
@@ -88,7 +124,6 @@
 /* Layout utility replacements (previously Tailwind classes) */
 html {
   height: 100%;
-  background: #ffffff;
 }
 
 body {
@@ -97,9 +132,12 @@ body {
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), sans-serif;
+  padding-top: 100px;
+  transition: background var(--transition-base), color var(--transition-base);
 }
-
-/* Dark mode intentionally disabled — site uses light theme only */
 
 *,
 *::before,
@@ -107,11 +145,4 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-poppins), sans-serif;
-  padding-top: 100px;
 }

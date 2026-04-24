@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, ChevronRight, ChevronLeft, Users, Briefcase, Check } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import "../styles/landing.css";
 
 const servicesFeatures = [
@@ -60,6 +61,7 @@ const familyServiceCards = [
     title: "Airport Transfers Baby Seat",
     desc: "Easy trips to and from Airport, with help for your luggage and baby seats ready when you need them.",
     icon: "✈️",
+    image: "/assets/Airport_Service.png",
     buttonText: "Book Airport Transfers Baby Seat",
   },
   {
@@ -67,6 +69,7 @@ const familyServiceCards = [
     title: "Cruise Terminal Transfers",
     desc: "Safe and comfortable transfers to and from cruise terminals with premium child seats included.",
     icon: "🚢",
+    image: "https://images.unsplash.com/photo-1599640842225-85d111c60e6b?auto=format&fit=crop&q=80&w=1000",
     buttonText: "Book Cruise Terminal Taxi",
   },
   {
@@ -74,6 +77,7 @@ const familyServiceCards = [
     title: "Hotel & Holiday Transfers",
     desc: "A premium ride with an infant seat ready for your airport or hotel trip across the city.",
     icon: "🏨",
+    image: "/assets/Tours_Transfer.png",
     buttonText: "Book Baby Seat Taxi Sydney",
   },
 ];
@@ -138,144 +142,335 @@ const fleetVehicles = [
 ];
 
 const differenceFeatures = [
-  "We provide age appropriate seats for your child's trip.",
+  "We provide age appropriate seats for your child&apos;s trip.",
   "Reliable family focused transport across Australia.",
   "Our local drivers are experienced in family transport.",
   "Comfortable vehicles for airport, cruise, and family trips.",
 ];
 
+// --- Framer Motion Variants ---
+const fadeUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const fadeLeft = {
+  hidden: { opacity: 0, x: -80 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const fadeRight = {
+  hidden: { opacity: 0, x: 80 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.75, rotate: -3 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: { duration: 0.7, delay, type: "spring", stiffness: 100, damping: 14 },
+  }),
+};
+
+const flipIn = {
+  hidden: { opacity: 0, rotateY: 90 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    rotateY: 0,
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+// Floating particle component
+const FloatingParticle = ({ delay, x, y, size, duration }: { delay: number; x: string; y: string; size: number; duration: number }) => (
+  <motion.div
+    style={{
+      position: 'absolute', left: x, top: y,
+      width: size, height: size, borderRadius: '50%',
+      background: 'rgba(124, 58, 237, 0.12)',
+      pointerEvents: 'none', zIndex: 0,
+    }}
+    animate={{
+      y: [0, -30, 0, 20, 0],
+      x: [0, 15, -10, 5, 0],
+      scale: [1, 1.3, 0.9, 1.1, 1],
+      opacity: [0.3, 0.6, 0.4, 0.5, 0.3],
+    }}
+    transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
+  />
+);
+
 export default function Main() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [fleetIndex, setFleetIndex] = useState(0);
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroParallaxY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (entry.target.classList.contains("animate-on-scroll")) {
-              entry.target.classList.add("in-view");
-            }
-            if (entry.target.classList.contains("wc-animate")) {
-              entry.target.classList.add("wc-visible");
-            }
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-    );
+  const getVisibleCards = () => {
+    if (typeof window === "undefined") return 3;
+    if (window.innerWidth <= 640) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return 3;
+  };
 
-    const elements = containerRef.current?.querySelectorAll(".animate-on-scroll, .wc-animate");
-    elements?.forEach((el) => observer.observe(el));
+  const nextFleet = () => {
+    const visible = getVisibleCards();
+    setFleetIndex((prev) => (prev + 1 >= fleetVehicles.length - visible + 1 ? 0 : prev + 1));
+  };
 
-    return () => observer.disconnect();
-  }, []);
+  const prevFleet = () => {
+    const visible = getVisibleCards();
+    setFleetIndex((prev) => (prev - 1 < 0 ? fleetVehicles.length - visible : prev - 1));
+  };
 
   return (
-    <div ref={containerRef}>
+    <div style={{ position: 'relative' }}>
       {/* 1. HERO SECTION */}
-      <section className="hero" id="hero-section">
-        <div className="hero-container">
+      <section className="hero" id="hero-section" ref={heroRef} style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Floating particles */}
+        <FloatingParticle delay={0} x="10%" y="20%" size={12} duration={7} />
+        <FloatingParticle delay={1.5} x="80%" y="15%" size={18} duration={9} />
+        <FloatingParticle delay={0.8} x="65%" y="70%" size={10} duration={6} />
+        <FloatingParticle delay={2} x="25%" y="80%" size={14} duration={8} />
+        <FloatingParticle delay={0.3} x="90%" y="50%" size={8} duration={10} />
+        <FloatingParticle delay={1} x="5%" y="55%" size={16} duration={7.5} />
+
+        <motion.div className="hero-container" style={{ y: heroParallaxY, opacity: heroOpacity }}>
           {/* Left: Text Content */}
           <div className="hero-content">
-            <div className="hero-badge" id="hero-badge">
-              <span className="hero-badge-dot"></span>
+            <motion.div
+              className="hero-badge"
+              id="hero-badge"
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
+            >
+              <motion.span
+                className="hero-badge-dot"
+                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.6, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
               Premium Transport Solutions
-            </div>
+            </motion.div>
 
-            <h1 className="hero-title" id="hero-title">
+            <motion.h1
+              className="hero-title"
+              id="hero-title"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
               Your Trusted{" "}
               <span className="hero-title-highlight">Transport Partner</span>{" "}
               in Australia
-            </h1>
+            </motion.h1>
 
-            <p className="hero-description" id="hero-description">
+            <motion.p
+              className="hero-description"
+              id="hero-description"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6 }}
+            >
               SquareConnect delivers premium transport solutions — Airport
               Transfers, Day Tours, Cruise Transfers, and Hospital Transport.
               Every trip comes with professional drivers, tidy vehicles, and
               upfront fixed fares.
-            </p>
+            </motion.p>
 
-            <div className="hero-cta" id="hero-cta">
-              <Link href="/book" className="hero-cta-primary" id="hero-book-now">
-                Book Your Ride
-              </Link>
-              <a href="tel:+61423699909" className="hero-cta-secondary" id="hero-call">
+            <motion.div
+              className="hero-cta"
+              id="hero-cta"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link href="/book" className="hero-cta-primary" id="hero-book-now">
+                  Book Your Ride
+                </Link>
+              </motion.div>
+              <motion.a
+                href="tel:+61423699909"
+                className="hero-cta-secondary"
+                id="hero-call"
+                whileHover={{ scale: 1.03 }}
+              >
                 <Phone size={18} />
                 +61 423 699 909
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
           </div>
 
           {/* Right: Image Card */}
-          <div className="hero-visual" id="hero-visual">
-            <div className="hero-card" id="hero-card">
-              <Image 
-                src="/assets/Main_Image.png" 
-                alt="Main Transport Image" 
-                fill 
+          <motion.div
+            className="hero-visual"
+            id="hero-visual"
+            initial={{ opacity: 0, x: 100, scale: 0.85, rotate: 5 }}
+            animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+            transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 60, damping: 18 }}
+          >
+            <motion.div
+              className="hero-card"
+              id="hero-card"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.03, rotate: -1 }}
+            >
+              <Image
+                src="/assets/Main_Image.png"
+                alt="Main Transport Image"
+                fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                style={{ objectFit: 'cover' }} 
+                style={{ objectFit: 'cover' }}
                 priority
               />
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* 2. SERVICES INTRO SECTION */}
       <section className="services-intro" id="services-intro">
         <div className="services-intro-container">
-          <div className="services-intro-heading animate-on-scroll">
+          <motion.div
+            className="services-intro-heading"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0}
+          >
             <h2>
               Need a <span className="heading-highlight">Reliable Transport</span> in Australia?
             </h2>
             <p>
               From airport pickups to scenic day tours, we make every journey safe, comfortable, and stress-free.
             </p>
-          </div>
+          </motion.div>
 
           <div className="services-intro-body">
-            <div className="services-intro-image animate-on-scroll animate-left delay-2">
+            <motion.div
+              className="services-intro-image"
+              variants={fadeLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.15}
+            >
               <div className="services-intro-card">
                 <div className="services-intro-card-badge">
                   <span className="services-intro-card-badge-dot"></span>
                   Trusted Service
                 </div>
-                <span className="services-intro-card-emoji">👨‍👩‍👧‍👦</span>
+                <Image
+                  src="/assets/Family.png"
+                  alt="Trusted Family Service"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 500px"
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
-            </div>
+            </motion.div>
 
             <div className="services-intro-text">
-              <h3 className="animate-on-scroll animate-right delay-2">
+              <motion.h3
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                custom={0.2}
+              >
                 Travelling across Australia shouldn&apos;t be stressful
-              </h3>
-              <p className="services-intro-text-paragraph animate-on-scroll animate-right delay-3">
+              </motion.h3>
+              <motion.p
+                className="services-intro-text-paragraph"
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                custom={0.3}
+              >
                 Whether you&apos;re heading to the airport, catching a cruise, or visiting a loved one at the hospital — SquareConnect takes the hassle out of transport. We&apos;re one of the most trusted transport services across Sydney, Melbourne, and Gold Coast.
-              </p>
-              <p className="services-intro-text-paragraph animate-on-scroll animate-right delay-4">
+              </motion.p>
+              <motion.p
+                className="services-intro-text-paragraph"
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                custom={0.4}
+              >
                 That&apos;s where SquareConnect makes life easier. We provide professional drivers, premium vehicles, and a seamless booking experience.
-              </p>
+              </motion.p>
 
-              <ul className="services-intro-features">
-                {servicesFeatures.map((feature, index) => (
-                  <li key={feature} className={`services-intro-feature animate-on-scroll animate-right delay-${index + 5}`}>
+              <motion.ul
+                className="services-intro-features"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+              >
+                {servicesFeatures.map((feature) => (
+                  <motion.li key={feature} className="services-intro-feature" variants={staggerItem}>
                     <span className="feature-icon">
                       <ChevronRight size={16} />
                     </span>
                     {feature}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
 
-              <div className="services-intro-cta animate-on-scroll animate-right delay-8">
-                <Link href="/book" className="services-intro-cta-primary">
-                  Book Your Ride Now
-                </Link>
+              <motion.div
+                className="services-intro-cta"
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                custom={0.6}
+              >
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  <Link href="/book" className="services-intro-cta-primary">
+                    Book Your Ride Now
+                  </Link>
+                </motion.div>
                 <a href="tel:+61423699909" className="services-intro-cta-secondary">
                   <Phone size={18} />
                   +61 423 699 909
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -284,7 +479,14 @@ export default function Main() {
       {/* 3. WHY CHOOSE + BOOKING FORM SECTION */}
       <section className="why-choose" id="why-choose">
         <div className="why-choose-container">
-          <div className="booking-form-wrapper wc-animate wc-left wc-delay-1">
+          <motion.div
+            className="booking-form-wrapper"
+            variants={fadeLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0.1}
+          >
             <div className="booking-form-card" id="booking-form-card">
               <h3 className="booking-form-title">
                 Book Your Ride <span className="form-title-highlight">in Seconds</span>
@@ -342,76 +544,137 @@ export default function Main() {
                   </div>
                 </div>
 
-                <button className="form-submit" type="submit">
+                <motion.button
+                  className="form-submit"
+                  type="submit"
+                  whileHover={{ scale: 1.03, boxShadow: "0 8px 25px rgba(124, 58, 237, 0.35)" }}
+                  whileTap={{ scale: 0.97 }}
+                >
                   Next
                   <ChevronRight size={18} />
-                </button>
+                </motion.button>
               </form>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="why-choose-content">
-            <h2 className="wc-animate wc-right wc-delay-2">
+          <motion.div
+            className="why-choose-content"
+            variants={fadeRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0.2}
+          >
+            <h2>
               Why Travellers Choose <span className="heading-highlight">SquareConnect</span>
             </h2>
-            <p className="why-choose-intro wc-animate wc-right wc-delay-3">
+            <p className="why-choose-intro">
               We know reliability matters most when it comes to transport.
             </p>
 
-            <ul className="why-choose-features">
-              {whyChooseFeatures.map((feature, index) => (
-                <li key={feature} className={`why-choose-feature wc-animate wc-right wc-delay-${index + 4}`}>
+            <motion.ul
+              className="why-choose-features"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+            >
+              {whyChooseFeatures.map((feature) => (
+                <motion.li key={feature} className="why-choose-feature" variants={staggerItem}>
                   <span className="why-choose-feature-icon">
                     <ChevronRight size={15} />
                   </span>
                   {feature}
-                </li>
+                </motion.li>
               ))}
-            </ul>
+            </motion.ul>
 
-            <div className="why-choose-image-card wc-animate wc-right wc-delay-10">
-              <img 
-                src="/assets/ElevenSeater.jpg" 
-                alt="SquareConnect Eleven Seater" 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            <motion.div
+              className="why-choose-image-card"
+              variants={scaleIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              custom={0.2}
+            >
+              <img
+                src="/assets/ElevenSeater.jpg"
+                alt="SquareConnect Eleven Seater"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-            </div>
+            </motion.div>
 
-            <p className="why-choose-bottom-text wc-animate wc-right wc-delay-11">
+            <motion.p
+              className="why-choose-bottom-text"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              custom={0.1}
+            >
               When you book with SquareConnect, you can travel with peace of mind.
-            </p>
+            </motion.p>
 
-            <div className="why-choose-cta wc-animate wc-right wc-delay-12">
-              <Link href="/book" className="why-choose-cta-primary">
-                Book Online
-              </Link>
+            <motion.div
+              className="why-choose-cta"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              custom={0.2}
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link href="/book" className="why-choose-cta-primary">
+                  Book Online
+                </Link>
+              </motion.div>
               <a href="tel:+61423699909" className="why-choose-cta-secondary">
                 <Phone size={18} />
                 +61 423 699 909
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* 4. BABY SEAT OPTIONS SECTION */}
       <section className="baby-seats" id="baby-seats">
         <div className="baby-seats-container">
-          <div className="baby-seats-heading animate-on-scroll">
+          <motion.div
+            className="baby-seats-heading"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0}
+          >
             <h2>
               Baby Seat Options <span className="heading-highlight">We Provide</span>
             </h2>
-          </div>
+          </motion.div>
 
           <div className="baby-seats-body">
-            <div className="baby-seats-content animate-on-scroll animate-left">
+            <motion.div
+              className="baby-seats-content"
+              variants={fadeLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.1}
+            >
               <p className="baby-seats-intro">
                 Every child is different, which is why we offer a range of seat types for different ages. During booking, tell us your child&apos;s age and we&apos;ll provide an age appropriate seat for your trip.
               </p>
 
-              <ul className="baby-seats-list">
-                {babySeats.map((seat, index) => (
-                  <li key={seat.id} className={`baby-seat-item animate-on-scroll animate-left delay-${index + 2}`}>
+              <motion.ul
+                className="baby-seats-list"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+              >
+                {babySeats.map((seat) => (
+                  <motion.li key={seat.id} className="baby-seat-item" variants={staggerItem}>
                     <div className="baby-seat-item-icon">
                       <ChevronRight size={16} />
                     </div>
@@ -419,48 +682,106 @@ export default function Main() {
                       <h4>{seat.title}</h4>
                       <p>{seat.desc}</p>
                     </div>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
 
-              <p className="baby-seats-footer animate-on-scroll animate-left delay-5">
+              <motion.p
+                className="baby-seats-footer"
+                variants={fadeLeft}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                custom={0.3}
+              >
                 Our seats meet Australian standards and are kept in clean, ready to use condition. You can also bring your own seat if you prefer, and our drivers will assist with fitting it for your trip.
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
 
-            <div className="baby-seats-visual animate-on-scroll animate-right">
+            <motion.div
+              className="baby-seats-visual"
+              variants={fadeRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.2}
+            >
               <div className="baby-seats-grid">
                 <div className="baby-seat-stack">
-                  <div className="baby-seat-card rear-facing-card">
-                    <div className="baby-seat-card-emoji">👶</div>
+                  <motion.div
+                    className="baby-seat-card rear-facing-card"
+                    variants={flipIn}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={0.1}
+                    whileHover={{ y: -12, scale: 1.06, rotateZ: -2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    style={{ perspective: 800 }}
+                  >
+                    <motion.div
+                      className="baby-seat-card-emoji"
+                      animate={{ rotate: [0, -5, 5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    >👶</motion.div>
                     <span className="baby-seat-card-label">Rear Facing</span>
-                  </div>
-                  <div className="baby-seat-card forward-facing-card">
-                    <div className="baby-seat-card-emoji">🧒</div>
+                  </motion.div>
+                  <motion.div
+                    className="baby-seat-card forward-facing-card"
+                    variants={flipIn}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={0.25}
+                    whileHover={{ y: -12, scale: 1.06, rotateZ: 2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    style={{ perspective: 800 }}
+                  >
+                    <motion.div
+                      className="baby-seat-card-emoji"
+                      animate={{ rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    >🧒</motion.div>
                     <span className="baby-seat-card-label">Forward Facing</span>
-                  </div>
+                  </motion.div>
                 </div>
-                <div className="baby-seat-card booster-card">
+                <motion.div
+                  className="baby-seat-card booster-card"
+                  variants={flipIn}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={0.4}
+                  whileHover={{ y: -12, scale: 1.06 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <div style={{ position: 'relative', width: '100%', flex: 1, minHeight: '160px', marginBottom: '16px' }}>
-                    <Image 
-                      src="/assets/BoosterSeat.png" 
-                      alt="Booster Seat" 
-                      fill 
+                    <Image
+                      src="/assets/BoosterSeat.png"
+                      alt="Booster Seat"
+                      fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ objectFit: 'contain' }} 
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <span className="baby-seat-card-label">Booster Seat</span>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* 5. FAMILY FRIENDLY SERVICES SECTION */}
       <section className="family-services" id="family-services">
-        <div className="family-services-container animate-on-scroll">
+        <motion.div
+          className="family-services-container"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          custom={0}
+        >
           <div className="family-services-heading">
             <h2>
               Our <span className="heading-highlight">Family Friendly</span> Services
@@ -470,114 +791,246 @@ export default function Main() {
             SquareConnect provides a range of family transport options across Australia, ensuring safety and comfort for passengers of all ages.
           </p>
 
-          <div className="family-services-grid">
+          <motion.div
+            className="family-services-grid"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+          >
             {familyServiceCards.map((card, index) => (
-              <div key={card.id} className={`family-service-card animate-on-scroll delay-${(index * 2) + 2}`}>
-                <div className="family-service-card-icon">
-                  <span>{card.icon}</span>
-                </div>
+              <motion.div
+                key={card.id}
+                className="family-service-card"
+                variants={scaleIn}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                custom={index * 0.15}
+                whileHover={{
+                  y: -14,
+                  boxShadow: "0 30px 70px rgba(124, 58, 237, 0.15)",
+                  borderColor: "rgba(124, 58, 237, 0.25)",
+                }}
+                transition={{ type: "spring", stiffness: 250, damping: 18 }}
+              >
+                <motion.div
+                  className="family-service-card-visual"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  {card.image ? (
+                    <img src={card.image} alt={card.title} className="family-service-card-img" />
+                  ) : (
+                    <span>{card.icon}</span>
+                  )}
+                </motion.div>
                 <h3>{card.title}</h3>
                 <p>{card.desc}</p>
-                <Link href="/book" className="family-service-card-btn">
-                  {card.buttonText}
-                </Link>
-              </div>
+                <motion.div whileHover={{ scale: 1.05, x: 5 }} whileTap={{ scale: 0.95 }}>
+                  <Link href="/book" className="family-service-card-btn">
+                    {card.buttonText}
+                  </Link>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* 6. OUR FLEET SECTION */}
       <section className="fleet" id="fleet">
-        <div className="fleet-container animate-on-scroll">
+        <motion.div
+          className="fleet-container"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          custom={0}
+        >
           <div className="fleet-heading">
             <h2>Our <span className="heading-highlight">Fleet</span></h2>
           </div>
 
-          <div className="fleet-grid">
-            {fleetVehicles.map((vehicle) => (
-              <div key={vehicle.id} className="fleet-card active">
-                <span className="fleet-card-title">{vehicle.title}</span>
-                <div className="fleet-card-image">
-                  {vehicle.image ? (
-                    <img 
-                      src={vehicle.image} 
-                      alt={vehicle.title} 
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-                    />
-                  ) : (
-                    <span className="fleet-emoji">{vehicle.emoji}</span>
-                  )}
-                  {vehicle.features && (
-                    <div className="fleet-card-overlay">
-                      <ul className="fleet-features-list">
-                        {vehicle.features.map((feature, i) => (
-                          <li key={i} className="fleet-feature-item">
-                            <Check size={14} className="feature-check-icon" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+          <div className="fleet-slider-wrapper">
+            <motion.button
+              className="fleet-nav-btn prev"
+              onClick={prevFleet}
+              aria-label="Previous Vehicle"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <ChevronLeft size={24} />
+            </motion.button>
+
+            <div className="fleet-slider-content">
+              <motion.div
+                className="fleet-grid"
+                animate={{ x: `-${fleetIndex * (100 / fleetVehicles.length)}%` }}
+                transition={{ duration: 0.6, type: "spring", stiffness: 120, damping: 20 }}
+              >
+                {fleetVehicles.map((vehicle, idx) => (
+                  <div key={vehicle.id} className={`fleet-card ${idx === fleetIndex ? "active" : ""}`} style={{ flex: '1', minWidth: '0' }}>
+                    <span className="fleet-card-title">{vehicle.title}</span>
+                    <div className="fleet-card-image">
+                      {vehicle.image ? (
+                        <img
+                          src={vehicle.image}
+                          alt={vehicle.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                      ) : (
+                        <span className="fleet-emoji">{vehicle.emoji}</span>
+                      )}
+                      {vehicle.features && (
+                        <div className="fleet-card-overlay">
+                          <ul className="fleet-features-list">
+                            {vehicle.features.map((feature, i) => (
+                              <li key={i} className="fleet-feature-item">
+                                <Check size={14} className="feature-check-icon" />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="fleet-card-specs">
-                  <div className="fleet-spec">
-                    <Users size={16} />
-                    <span>{vehicle.passengers}</span>
+                    <div className="fleet-card-specs">
+                      <div className="fleet-spec">
+                        <Users size={16} />
+                        <span>{vehicle.passengers}</span>
+                      </div>
+                      <div className="fleet-spec">
+                        <Briefcase size={16} />
+                        <span>{vehicle.bags}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="fleet-spec">
-                    <Briefcase size={16} />
-                    <span>{vehicle.bags}</span>
-                  </div>
-                </div>
-              </div>
+                ))}
+              </motion.div>
+            </div>
+
+            <motion.button
+              className="fleet-nav-btn next"
+              onClick={nextFleet}
+              aria-label="Next Vehicle"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <ChevronRight size={24} />
+            </motion.button>
+          </div>
+
+          <div className="fleet-dots">
+            {fleetVehicles.map((_, idx) => (
+              <button
+                key={idx}
+                className={`fleet-dot ${idx === fleetIndex ? "active" : ""}`}
+                onClick={() => setFleetIndex(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 7. WHY DIFFERENT SECTION */}
       <section className="difference" id="difference">
         <div className="difference-container">
-          <div className="difference-heading animate-on-scroll">
+          <motion.div
+            className="difference-heading"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0}
+          >
             <h2>Why <span className="heading-highlight">SquareConnect</span> Is Different</h2>
-          </div>
+          </motion.div>
 
           <div className="difference-body">
-            <div className="difference-visual animate-on-scroll animate-left">
-              <div className="difference-image-card">
-                <span className="difference-emoji">🛡️</span>
-                <div className="difference-badge">
-                  <span className="difference-badge-dot"></span>
+            <motion.div
+              className="difference-visual"
+              variants={scaleIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.15}
+            >
+              <motion.div
+                className="difference-image-card"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                whileHover={{ scale: 1.04, rotate: -1 }}
+              >
+                <Image
+                  src="/assets/Family.png"
+                  alt="Family Safe Travel"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  style={{ objectFit: 'cover' }}
+                  className="rounded-[40px]"
+                />
+                <motion.div
+                  className="difference-badge"
+                  animate={{ boxShadow: ["0 10px 25px rgba(0,0,0,0.06)", "0 10px 35px rgba(124, 58, 237, 0.2)", "0 10px 25px rgba(0,0,0,0.06)"] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <motion.span
+                    className="difference-badge-dot"
+                    animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
                   Safety First
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
 
-            <div className="difference-content animate-on-scroll animate-right">
-              <p className="difference-intro">
+            <div className="difference-content">
+              <motion.p
+                className="difference-intro"
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+                custom={0.2}
+              >
                 Many transport providers don&apos;t provide child seats, but SquareConnect specialises in them. We think about your family&apos;s safety as much as you do.
-              </p>
+              </motion.p>
 
-              <ul className="difference-list">
-                {differenceFeatures.map((feature, index) => (
-                  <li key={feature} className={`difference-item animate-on-scroll animate-right delay-${index + 2}`}>
+              <motion.ul
+                className="difference-list"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+              >
+                {differenceFeatures.map((feature) => (
+                  <motion.li key={feature} className="difference-item" variants={staggerItem}>
                     <ChevronRight size={18} className="difference-icon" />
                     <span>{feature}</span>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
 
-              <div className="difference-cta animate-on-scroll animate-right delay-6">
-                <Link href="/book" className="difference-cta-primary">
-                  Reserve Baby Taxi Online
-                </Link>
+              <motion.div
+                className="difference-cta"
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                custom={0.3}
+              >
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  <Link href="/book" className="difference-cta-primary">
+                    Reserve Baby Taxi Online
+                  </Link>
+                </motion.div>
                 <a href="tel:+61423699909" className="difference-cta-secondary">
                   <Phone size={18} />
                   +61 423 699 909
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

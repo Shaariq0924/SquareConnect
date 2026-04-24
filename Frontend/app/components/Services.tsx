@@ -8,19 +8,50 @@ import {
 } from "lucide-react";
 import "../styles/Services.css";
 
+// Helper to highlight parts of the title
+const HighlightTitle = ({ text }: { text: string }) => {
+  if (!text) return null;
+  const parts = text.split(" ");
+  if (parts.length <= 1) return <span>{text}</span>;
+  const highlightCount = parts.length > 5 ? 3 : 2;
+  const mainText = parts.slice(0, parts.length - highlightCount).join(" ");
+  const highlightedPart = parts.slice(parts.length - highlightCount).join(" ");
+  return (
+    <>
+      {mainText} <span className="heading-highlight">{highlightedPart}</span>
+    </>
+  );
+};
+
+interface SeatOption {
+  id: string;
+  title: string;
+  emoji: string;
+  image?: string;
+  hoverDetails?: {
+    subtitle: string;
+    bullets: string[];
+  };
+}
+
 export type ServiceType = "airport" | "hospital" | "dayTours" | "hotel" | "cruise";
 
 interface ServicesProps {
   serviceType: ServiceType;
 }
 
-// Add generic type definition for pageData to accept any ServiceType string
 type PageDataStructure = {
-  hero: { badge: string; title: string; desc: string; emoji: string; btnPrimaryText: string; btnPrimaryBg: string; titleSize: string; themeClass?: string; image?: string };
+  hero: { badge: string; title: string; desc: string; emoji: string; btnPrimaryText: string; btnPrimaryBg: string | null; titleSize: string; themeClass?: string; image?: string };
   difference: { heading: string; emoji: string; isImageRight: boolean; texts: string[]; list: string[]; btnText: string; image?: string; background?: string; btnSolid?: boolean };
-  chooseUs: { heading: string; subheading: string; cards: { icon: any; title: string; desc: string }[]; footerText: string };
-  babySeats: { heading: string; subheading: string; styleVariant: string; options: { id: string; title: string; emoji: string; image?: string; hoverDetails?: { subtitle: string; bullets: string[] } }[] };
+  chooseUs: { heading: string; subheading: string; cards: ChooseUsCard[]; footerText: string };
+  babySeats: { heading: string; subheading: string; styleVariant: string; options: SeatOption[] };
 };
+
+interface ChooseUsCard {
+  icon: React.ComponentType<{ size?: number; color?: string }>;
+  title: string;
+  desc: string;
+}
 
 // ==========================================
 // CORE PAGE DATA MAP
@@ -34,7 +65,8 @@ const pageData: Record<string, PageDataStructure> = {
       emoji: "✈️",
       btnPrimaryText: "Book Your Ride",
       btnPrimaryBg: "var(--primary)",
-      titleSize: "56px"
+      titleSize: "56px",
+      image: "/assets/Airport_Service.png"
     },
     difference: {
       heading: "Why SquareConnect Is Different",
@@ -78,8 +110,9 @@ const pageData: Record<string, PageDataStructure> = {
       title: "Medical or Hospital Transfers (Family or Child Appointments)",
       desc: "Need to get to the hospital with your baby and want a safe, comfortable ride?",
       emoji: "🏥🚗",
+      image: "/assets/Hospital_Transfer.png",
       btnPrimaryText: "Book Your Ride",
-      btnPrimaryBg: "var(--primary-light)",
+      btnPrimaryBg: null,
       titleSize: "48px"
     },
     difference: {
@@ -121,17 +154,18 @@ const pageData: Record<string, PageDataStructure> = {
       title: "Daycare & School Runs\nBaby Seat Taxi",
       desc: "Safe, reliable school and daycare transport for your little ones all across Sydney NSW",
       emoji: "🎒",
+      image: "/assets/Day-Tours.png",
       themeClass: "theme-day-tours",
       btnPrimaryText: "Book Your Ride",
-      btnPrimaryBg: "", // Inherit from CSS theme
+      btnPrimaryBg: null,
       titleSize: "56px"
     },
     difference: {
       heading: "Daycare Taxi with Baby Seat",
       emoji: "🚕",
-      image: "https://images.unsplash.com/photo-1544061807-68b20dbb6be6?auto=format&fit=crop&q=80&w=1500",
+      image: "/assets/DayCare.png",
       isImageRight: false,
-      background: "#fff0f9",
+      background: "var(--background)",
       btnSolid: true,
       texts: [
         "Whether it's sports practice, music lessons, or tutoring, our after school activity taxi Sydney keeps kids moving between commitments safely.",
@@ -192,9 +226,9 @@ const pageData: Record<string, PageDataStructure> = {
       title: "Hotel & Tourist Taxi\nwith Baby Seat",
       desc: "Safe and comfortable hotel and tourist transfers with baby seats, giving your little one the care they deserve while you travel stress free",
       emoji: "🏨",
-      image: "https://images.unsplash.com/photo-1544061807-68b20dbb6be6?auto=format&fit=crop&q=80&w=1000",
+      image: "/assets/Tours_Transfer.png",
       btnPrimaryText: "Book Your Ride",
-      btnPrimaryBg: "linear-gradient(135deg, #df75cb, #c1adff)",
+      btnPrimaryBg: null,
       titleSize: "56px",
       themeClass: "theme-hotel"
     },
@@ -241,7 +275,7 @@ const pageData: Record<string, PageDataStructure> = {
       emoji: "🚢",
       image: "https://images.unsplash.com/photo-1599640842225-85d111c60e6b?auto=format&fit=crop&q=80&w=1000",
       btnPrimaryText: "Book Your Ride",
-      btnPrimaryBg: "linear-gradient(135deg, #df75cb, #c1adff)",
+      btnPrimaryBg: null,
       titleSize: "56px",
       themeClass: "theme-cruise"
     },
@@ -279,28 +313,6 @@ const pageData: Record<string, PageDataStructure> = {
   }
 };
 
-// ==========================================
-// AIRPORT SPECIFIC DATA ARRAYS
-// ==========================================
-const checklistItems = [
-  "Phone us on +61 423 699 909 or email book@squareconnect.com.au",
-  "Let us know how many seats you need and the ages of your children",
-  "Your driver will bring the requested seats prepared for your trip",
-  "Convenient transfers to and from Sydney Airport",
-];
-
-const commonRequests = [
-  "Airport transfer with infant car seat",
-  "Maxi taxi baby seat Sydney airport",
-  "Sydney airport transfers with baby seat",
-  "Baby capsule taxi Sydney to airport",
-  "Sydney baby seat taxi airport transfer",
-  "Sydney airport transfer with booster seat",
-  "Airport taxi with car seat Sydney",
-  "Fixed fare baby seat taxi Sydney",
-  "Sydney airport taxi infant capsule"
-];
-
 const vehicleOptions = [
   { id: "premium", title: "Premium Sedan", passengers: "4 Passengers", bags: "4 Bags", emoji: "🚗", image: "/assets/Sedan.jpg" },
   { id: "seater-7", title: "7 Seater", passengers: "7 Passengers", bags: "8 Bags", emoji: "🚐", image: "/assets/SevenSeater.webp" },
@@ -308,9 +320,6 @@ const vehicleOptions = [
   { id: "seater-11", title: "11 Seater", passengers: "11 Passengers", bags: "16 Bags", emoji: "🚍", image: "/assets/ElevenSeater.jpg" },
 ];
 
-// ==========================================
-// HOSPITAL SPECIFIC DATA ARRAYS
-// ==========================================
 const hospitalList = [
   "Royal Prince Alfred Hospital",
   "St Vincent's Hospital",
@@ -321,24 +330,6 @@ const hospitalList = [
   "North Shore Private & Royal North Shore Hospital",
   "Sydney Children's Hospital",
   "Concord Hospital"
-];
-
-// ==========================================
-// CRUISE SPECIFIC DATA ARRAYS
-// ==========================================
-const cruiseTerminals = [
-  {
-    title: "Overseas Passenger",
-    subtitle: "Terminal (Circular Quay)",
-    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&q=80&w=1500",
-    tag: "ideal for large international ships"
-  },
-  {
-    title: "White Bay Cruise Terminal",
-    subtitle: "(Balmain)",
-    image: "https://plus.unsplash.com/premium_photo-1697730225139-2a9121a5eb2e?auto=format&fit=crop&q=80&w=1500",
-    tag: "commonly used for domestic & smaller cruises"
-  }
 ];
 
 // ==========================================
@@ -373,7 +364,7 @@ export default function Services({ serviceType }: ServicesProps) {
 
     document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [serviceType]); // re-run observer if page context changes
+  }, [serviceType]);
 
   const nextVehicle = () => {
     setCurrentVehicle((prev) => (prev + 1) % vehicleOptions.length);
@@ -382,23 +373,6 @@ export default function Services({ serviceType }: ServicesProps) {
     setCurrentVehicle((prev) => (prev - 1 + vehicleOptions.length) % vehicleOptions.length);
   };
 
-  // Helper to highlight parts of the title
-  const HighlightTitle = ({ text }: { text: string }) => {
-    if (!text) return null;
-    const parts = text.split(" ");
-    if (parts.length <= 1) return <span>{text}</span>;
-    // Highlight the last 2-3 words for a modern look
-    const highlightCount = parts.length > 5 ? 3 : 2;
-    const mainText = parts.slice(0, parts.length - highlightCount).join(" ");
-    const highlightedPart = parts.slice(parts.length - highlightCount).join(" ");
-    return (
-      <>
-        {mainText} <span className="heading-highlight">{highlightedPart}</span>
-      </>
-    );
-  };
-
-  // --- Reusable Renders ---
   const renderDifferenceContent = () => (
     <div className={`service-difference-content ${data.difference.isImageRight ? "pr-10" : "pl-10"}`}>
       <h2 className="service-difference-heading" style={{ textAlign: 'left', marginBottom: '30px' }}>
@@ -424,7 +398,7 @@ export default function Services({ serviceType }: ServicesProps) {
 
       {data.difference.btnText !== "" && (
         <div className={`service-cta ${data.difference.isImageRight ? "mt-6" : "mt-8"}`} style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-          <Link href="/book" className={`service-cta-primary difference-btn ${data.difference.isImageRight ? "py-3" : ""}`} style={data.difference.btnSolid ? { background: 'linear-gradient(135deg, #df75cb, #c1adff)', color: 'white', border: 'none', padding: '14px 32px', boxShadow: '0 4px 15px rgba(223, 117, 203, 0.3)' } : { background: data.hero.btnPrimaryBg }}>
+          <Link href="/book" className={`service-cta-primary difference-btn ${data.difference.isImageRight ? "py-3" : ""}`} style={data.difference.btnSolid ? { background: 'linear-gradient(135deg, #df75cb, #c1adff)', color: 'white', border: 'none', padding: '14px 32px', boxShadow: '0 4px 15px rgba(223, 117, 203, 0.3)' } : { background: data.hero.btnPrimaryBg || 'var(--primary)' }}>
             {data.difference.btnText}
             <ArrowRight size={18} className="ml-2" />
           </Link>
@@ -455,21 +429,21 @@ export default function Services({ serviceType }: ServicesProps) {
 
   return (
     <div className="services-page">
-      {/* 1. HERO SECTION */}
       <section className={`service-hero ${data.hero.themeClass || ""}`}>
         <div className="service-hero-container animate-on-scroll">
           <div className="service-content">
             <div className="service-badge">
+              <span className="hero-badge-dot"></span>
               {data.hero.badge}
             </div>
             <h1 className="service-title" style={{ fontSize: data.hero.titleSize, whiteSpace: 'pre-line' }}>
-              {data.hero.title}
+              <HighlightTitle text={data.hero.title} />
             </h1>
             <p className="service-description">
               {data.hero.desc}
             </p>
             <div className="service-cta">
-              <Link href="/book" className="service-cta-primary" style={data.hero.btnPrimaryBg ? { background: data.hero.btnPrimaryBg } : undefined}>
+              <Link href="/book" className="service-cta-primary">
                 {data.hero.btnPrimaryText}
                 <ArrowRight size={18} />
               </Link>
@@ -482,20 +456,21 @@ export default function Services({ serviceType }: ServicesProps) {
 
           <div className="service-visual">
             <div className="service-image-container">
-              {data.hero.image ? (
-                <div 
-                  className="hero-zoom-image"
-                  style={{ backgroundImage: `url(${data.hero.image})` }}
-                />
-              ) : (
-                <span className="service-emoji-placeholder">{data.hero.emoji}</span>
-              )}
+              <div className="service-image-inner">
+                {data.hero.image ? (
+                  <div 
+                    className="hero-zoom-image"
+                    style={{ backgroundImage: `url(${data.hero.image})` }}
+                  />
+                ) : (
+                  <span className="service-emoji-placeholder">{data.hero.emoji}</span>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. WHY DIFFERENT SECTION */}
       <section className="service-difference" style={data.difference.background ? { background: data.difference.background } : {}}>
         <div className="service-difference-container animate-on-scroll">
           {!data.difference.isImageRight && (
@@ -520,9 +495,8 @@ export default function Services({ serviceType }: ServicesProps) {
         </div>
       </section>
 
-      {/* 3. WHY PARENTS CHOOSE US */}
       {data.chooseUs.cards && data.chooseUs.cards.length > 0 && (
-        <section className="choose-us-section" style={serviceType === 'hospital' ? { background: '#fdfbff', paddingTop: '80px', paddingBottom: '80px' } : {}}>
+        <section className="choose-us-section" style={serviceType === 'hospital' ? { background: 'var(--background)', paddingTop: '80px', paddingBottom: '80px' } : {}}>
           <div className="choose-us-container animate-on-scroll">
             <div className="services-choose-header animate-on-scroll">
               <h2><HighlightTitle text={data.chooseUs.heading} /></h2>
@@ -530,7 +504,7 @@ export default function Services({ serviceType }: ServicesProps) {
             </div>
 
             <div className="choose-us-grid">
-              {data.chooseUs.cards.map((card: any, i: number) => {
+              {data.chooseUs.cards.map((card: ChooseUsCard, i: number) => {
                 const Icon = card.icon;
                 const isAirportActive = serviceType === 'airport' && i === 1;
                 return (
@@ -550,7 +524,6 @@ export default function Services({ serviceType }: ServicesProps) {
         </section>
       )}
 
-      {/* 4. OUR BABY SEAT OPTIONS */}
       {data.babySeats.options && data.babySeats.options.length > 0 && (
         <section className="seat-options-section" style={serviceType === 'hospital' ? { paddingTop: '100px' } : {}}>
           <div className="seat-options-container animate-on-scroll">
@@ -559,24 +532,24 @@ export default function Services({ serviceType }: ServicesProps) {
               <p>{data.babySeats.subheading}</p>
             </div>
 
-            <div className="seat-options-carousel-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
+            <div className="seat-options-carousel-wrapper">
               {data.babySeats.styleVariant === 'pinkLabels' && (
-                <button className="carousel-arrow" onClick={() => scrollCarousel('left')} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#c1adff', color: 'white', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: 0.8, flexShrink: 0, transition: 'opacity 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}><ChevronLeft size={24} /></button>
+                <button className="carousel-arrow" onClick={() => scrollCarousel('left')}><ChevronLeft size={24} /></button>
               )}
 
-              <div className="seat-options-grid" ref={carouselRef} style={{ flex: 1, margin: 0 }}>
-                {data.babySeats.options.map((seat: any) => (
+              <div className="seat-options-grid" ref={carouselRef}>
+                {data.babySeats.options.map((seat: SeatOption) => (
                   <div key={seat.id} className="seat-card">
                     {data.babySeats.styleVariant === 'pinkLabels' ? (
-                      <div className="seat-card-inner group" style={{ transition: 'all 0.4s ease', cursor: 'pointer', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', backgroundColor: '#fcecf6' }} onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; const img = e.currentTarget.querySelector('.card-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1.08)'; const imgBox = e.currentTarget.querySelector('.seat-image-box') as HTMLElement; if(imgBox) imgBox.style.height = '145px'; const content = e.currentTarget.querySelector('.seat-hover-content') as HTMLElement; if(content) { content.style.maxHeight = '300px'; content.style.opacity = '1'; content.style.marginTop = '16px'; } }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; const img = e.currentTarget.querySelector('.card-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1)'; const imgBox = e.currentTarget.querySelector('.seat-image-box') as HTMLElement; if(imgBox) imgBox.style.height = '260px'; const content = e.currentTarget.querySelector('.seat-hover-content') as HTMLElement; if(content) { content.style.maxHeight = '0px'; content.style.opacity = '0'; content.style.marginTop = '0px'; } }}>
-                        <div className="seat-image-box" style={{ width: '100%', aspectRatio: 'auto', padding: seat.image ? '0' : '40px', height: '260px', overflow: 'hidden', marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, border: 'none', background: '#f8f4ff', transition: 'height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}>
+                      <div className="seat-card-inner-pink group" onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-10px)'; const img = e.currentTarget.querySelector('.card-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1.08)'; const imgBox = e.currentTarget.querySelector('.seat-image-box-pink') as HTMLElement; if(imgBox) imgBox.style.height = '145px'; const content = e.currentTarget.querySelector('.seat-hover-content') as HTMLElement; if(content) { content.style.maxHeight = '300px'; content.style.opacity = '1'; content.style.marginTop = '16px'; } }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; const img = e.currentTarget.querySelector('.card-bg-img') as HTMLElement; if (img) img.style.transform = 'scale(1)'; const imgBox = e.currentTarget.querySelector('.seat-image-box-pink') as HTMLElement; if(imgBox) imgBox.style.height = '260px'; const content = e.currentTarget.querySelector('.seat-hover-content') as HTMLElement; if(content) { content.style.maxHeight = '0px'; content.style.opacity = '0'; content.style.marginTop = '0px'; } }}>
+                        <div className="seat-image-box-pink" style={{ padding: seat.image ? '0' : '40px', height: '260px', aspectRatio: 'auto', marginBottom: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, border: 'none' }}>
                           {seat.image ? (
                             <div className="card-bg-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${seat.image})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}></div>
                           ) : (
                             <span className="seat-emoji" style={{ fontSize: '130px' }}>{seat.emoji}</span>
                           )}
                         </div>
-                        <div style={{ background: '#fcecf6', padding: '20px 24px', textAlign: 'left' }}>
+                        <div className="seat-card-content-pink">
                           <h3 className="seat-title" style={{ fontSize: '18px', textAlign: 'left', color: 'var(--primary)', marginBottom: 0, fontWeight: 700 }}>{seat.title}</h3>
                           
                           {seat.hoverDetails && (
@@ -585,7 +558,7 @@ export default function Services({ serviceType }: ServicesProps) {
                               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                 {seat.hoverDetails.bullets.map((bullet: string, idx: number) => (
                                   <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--gray-700)', fontSize: '14px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '20px', height: '20px', borderRadius: '50%', background: '#ff99cc', color: 'white', flexShrink: 0 }}>
+                                    <div className="seat-check-icon-pink">
                                       <Check size={12} strokeWidth={4} />
                                     </div>
                                     <span>{bullet}</span>
@@ -609,16 +582,16 @@ export default function Services({ serviceType }: ServicesProps) {
               </div>
 
               {data.babySeats.styleVariant === 'pinkLabels' && (
-                <button className="carousel-arrow" onClick={() => scrollCarousel('right')} style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#c1adff', color: 'white', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: 0.8, flexShrink: 0, transition: 'opacity 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}><ChevronRight size={24} /></button>
+                <button className="carousel-arrow" onClick={() => scrollCarousel('right')}><ChevronRight size={24} /></button>
               )}
             </div>
 
             {data.babySeats.styleVariant === 'pinkLabels' && (
               <div className="carousel-dots" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '40px', marginBottom: '30px' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#333' }}></span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ccc' }}></span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ccc' }}></span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ccc' }}></span>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary)' }}></span>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gray-300)' }}></span>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gray-300)' }}></span>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--gray-300)' }}></span>
               </div>
             )}
 
@@ -629,22 +602,19 @@ export default function Services({ serviceType }: ServicesProps) {
         </section>
       )}
 
-      {/* 5. VEHICLES SLIDER SECTION */}
       <section className="vehicles-slider-section">
         <div className="vehicles-slider-container animate-on-scroll">
           <div className="vehicles-header animate-on-scroll">
             <h2>Our Vehicles<br/><span className="heading-highlight">With Car Seats</span></h2>
-            <div className="slider-arrows">
-              <button onClick={prevVehicle} className="slider-btn"><ChevronLeft size={24} /></button>
-              <button onClick={nextVehicle} className="slider-btn"><ChevronRight size={24} /></button>
-            </div>
           </div>
 
-          <div className="vehicles-cards-container">
-            <div 
-              className="vehicles-track" 
-              style={{ transform: `translateX(-${currentVehicle * (100 / vehicleOptions.length)}%)` }}
-            >
+          <div className="vehicles-slider-wrapper">
+            <button onClick={prevVehicle} className="slider-btn prev" aria-label="Previous Vehicle"><ChevronLeft size={24} /></button>
+            <div className="vehicles-cards-container">
+              <div 
+                className="vehicles-track" 
+                style={{ transform: `translateX(-${currentVehicle * 100}%)` }}
+              >
               {vehicleOptions.map((v) => (
                 <div key={v.id} className="vehicle-card-wrapper">
                   <div className="vehicle-card">
@@ -668,22 +638,18 @@ export default function Services({ serviceType }: ServicesProps) {
               ))}
             </div>
           </div>
+          <button onClick={nextVehicle} className="slider-btn next" aria-label="Next Vehicle"><ChevronRight size={24} /></button>
         </div>
+      </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '30px' }}>
           {vehicleOptions.map((_, i) => (
-            <span key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: currentVehicle === i ? '#333' : '#ccc', transition: 'background 0.3s' }}></span>
+            <span key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: currentVehicle === i ? 'var(--primary)' : 'var(--gray-300)', transition: 'background 0.3s' }}></span>
           ))}
         </div>
       </section>
 
-      {/* =========================================================================
-          CONDITIONAL SECTIONS (Below Baby Seats)
-          - Airport renders: Checklist, Requests
-          - Hospital renders: Hospital List
-          ========================================================================= */}
-
       {serviceType === 'hospital' && (
-        <section className="airport-checklist-section" style={{ background: '#fdfbff', paddingBottom: '120px', marginTop: '60px' }}>
+        <section className="airport-checklist-section" style={{ background: 'var(--background)', paddingBottom: '120px', marginTop: '60px' }}>
           <div className="airport-checklist-container animate-on-scroll">
             <div className="text-center mb-16">
               <h2 className="checklist-main-title mb-6" style={{ marginBottom: '16px' }}>
@@ -720,7 +686,6 @@ export default function Services({ serviceType }: ServicesProps) {
 
       {serviceType === 'airport' && (
         <>
-          {/* 5. SYDNEY AIRPORT TRANSFERS CHECKLIST */}
           <section className="airport-checklist-section">
             <div className="airport-checklist-container animate-on-scroll">
               <h2 className="checklist-main-title">Sydney Airport Transfers with Baby Seat</h2>
@@ -750,7 +715,6 @@ export default function Services({ serviceType }: ServicesProps) {
             </div>
           </section>
 
-          {/* 6. AVAILABILITY & COMMON REQUESTS */}
           <section className="requests-section">
             <div className="requests-container animate-on-scroll">
               <div className="availability-header">
@@ -777,7 +741,7 @@ export default function Services({ serviceType }: ServicesProps) {
                 </div>
 
                 <p className="requests-after-text">
-                  We're also available for baby capsule airport pickups in Sydney, rear facing child car seat taxis, forward facing car seat trips at Sydney Airport, and child restraint taxis across Sydney suburbs.
+                  We&apos;re also available for baby capsule airport pickups in Sydney, rear facing child car seat taxis, forward facing car seat trips at Sydney Airport, and child restraint taxis across Sydney suburbs.
                 </p>
               </div>
 
@@ -805,25 +769,25 @@ export default function Services({ serviceType }: ServicesProps) {
       )}
 
       {serviceType === 'cruise' && (
-        <section className="cruise-terminals-section" style={{ background: '#fdfbff', padding: '100px 0' }}>
+        <section className="cruise-terminals-section">
           <div className="cruise-terminals-container animate-on-scroll" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
-            <h2 style={{ fontSize: '38px', fontWeight: 800, color: '#c1adff', textAlign: 'center', marginBottom: '60px' }}>Serving Both Sydney Cruise Terminals</h2>
+            <h2 className="terminals-heading">Serving Both Sydney Cruise Terminals</h2>
             
             <div className="terminals-grid">
               {cruiseTerminals.map((term, i) => (
-                <div key={i} className="terminal-card group" style={{ background: 'white', borderRadius: '24px', padding: '30px', boxShadow: '0 15px 50px rgba(0,0,0,0.04)', border: '1px solid rgba(124, 58, 237, 0.08)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div key={i} className="terminal-card-dynamic group">
                   <div className="terminal-header" style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                     <div style={{ marginTop: '4px' }}>
                       <Ship size={32} color="black" />
                     </div>
                     <div>
-                      <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#df75cb', lineHeight: 1.2 }}>{term.title}</h3>
+                      <h3 className="terminal-title">{term.title}</h3>
                       <p style={{ color: 'var(--gray-600)', fontSize: '15px', marginTop: '6px', fontWeight: 500 }}>{term.subtitle}</p>
                     </div>
                   </div>
-                  <div className="terminal-image-wrapper" style={{ position: 'relative', width: '100%', aspectRatio: '1.4 / 1', borderRadius: '16px', overflow: 'hidden', background: '#f8f4ff' }}>
+                  <div className="terminal-image-wrapper-dynamic">
                     <div style={{ width: '100%', height: '100%', backgroundImage: `url(${term.image})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }} className="terminal-bg-pic"></div>
-                    <div className="terminal-badge" style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: '#ecdcf9', padding: '10px 24px', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '8px', color: '#6d44a6', fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap', boxShadow: '0 10px 20px rgba(0,0,0,0.08)', backdropFilter: 'blur(10px)' }}>
+                    <div className="terminal-badge-dynamic">
                       <MapPin size={16} />
                       {term.tag}
                     </div>

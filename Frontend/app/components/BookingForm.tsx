@@ -113,25 +113,25 @@ Baby Seat: ${formData.babySeat === "yes" ? formData.babySeatType : "No"}`;
           {isSuccess ? (
             <div className="success-animation-container flex flex-col items-center justify-center p-8 text-center animate-fade-in">
               <CheckCircle size={80} color="#22c55e" className="animate-bounce" style={{ animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' }} />
-              <h2 className="text-2xl font-bold mt-4 text-gray-800" style={{ fontSize: '24px', fontWeight: 800, marginTop: '20px' }}>Booking Successfully Submitted!</h2>
-              <p className="text-gray-600 mt-2" style={{ fontSize: '16px', color: '#666', marginTop: '10px' }}>Redirecting to WhatsApp to confirm your ride...</p>
+              <h2 style={{ fontSize: '24px', fontWeight: 800, marginTop: '20px', color: 'var(--foreground)' }}>Booking Successfully Submitted!</h2>
+              <p style={{ fontSize: '16px', color: 'var(--gray-600)', marginTop: '10px' }}>Redirecting to WhatsApp to confirm your ride...</p>
               
-              <div className="mt-8 text-left bg-gray-50 p-6 w-full border border-gray-200" style={{ marginTop: '30px', padding: '24px', background: '#f9fafb', borderRadius: '16px', textAlign: 'left', width: '100%' }}>
-                  <h3 className="font-bold text-lg mb-4" style={{ fontSize: '18px', fontWeight: 700, color: '#7c3aed', marginBottom: '16px' }}>Your Booking Details</h3>
-                  <div className="grid grid-cols-2 gap-4 text-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontSize: '14px' }}>
-                    <div><span style={{ color: '#888' }}>Name:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.customerName}</strong></div>
-                    <div><span style={{ color: '#888' }}>Service:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.serviceType}</strong></div>
-                    <div><span style={{ color: '#888' }}>Pickup:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.pickupAddress}</strong></div>
-                    <div><span style={{ color: '#888' }}>Dropoff:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.dropoffAddress}</strong></div>
-                    <div><span style={{ color: '#888' }}>Date/Time:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.pickupDate} at {submittedData?.pickupTime}</strong></div>
-                    <div><span style={{ color: '#888' }}>Passengers:</span> <br/><strong style={{ color: '#222' }}>{submittedData?.passengers}</strong></div>
+              <div className="mt-8 text-left p-6 w-full" style={{ marginTop: '30px', padding: '24px', background: 'var(--gray-50)', borderRadius: '16px', textAlign: 'left', width: '100%', border: '1px solid var(--card-border)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--primary)', marginBottom: '16px' }}>Your Booking Details</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontSize: '14px' }}>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Name:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.customerName}</strong></div>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Service:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.serviceType}</strong></div>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Pickup:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.pickupAddress}</strong></div>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Dropoff:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.dropoffAddress}</strong></div>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Date/Time:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.pickupDate} at {submittedData?.pickupTime}</strong></div>
+                    <div><span style={{ color: 'var(--gray-500)' }}>Passengers:</span> <br/><strong style={{ color: 'var(--foreground)' }}>{submittedData?.passengers}</strong></div>
                   </div>
               </div>
             </div>
           ) : (
             <form className="booking-form" onSubmit={handleSubmit} method="POST" id="booking-form">
               {/* Customer Details section */}
-              <h3 style={{fontSize:'18px', fontWeight:600, color:'#333', marginBottom:'16px'}}>Personal Details</h3>
+              <h3 style={{fontSize:'18px', fontWeight:600, color:'var(--foreground)', marginBottom:'16px'}}>Personal Details</h3>
             
             <div className="form-field-group">
               <label className="form-label" htmlFor="customerName">Full Name <span>*</span></label>
@@ -149,7 +149,7 @@ Baby Seat: ${formData.babySeat === "yes" ? formData.babySeatType : "No"}`;
               </div>
             </div>
 
-            <h3 style={{fontSize:'18px', fontWeight:600, color:'#333', marginBottom:'16px', marginTop:'24px'}}>Trip Details</h3>
+            <h3 style={{fontSize:'18px', fontWeight:600, color:'var(--foreground)', marginBottom:'16px', marginTop:'24px'}}>Trip Details</h3>
 
             {/* Service Type */}
             <div className="form-field-group">
