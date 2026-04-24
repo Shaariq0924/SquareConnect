@@ -332,6 +332,35 @@ const hospitalList = [
   "Concord Hospital"
 ];
 
+const checklistItems = [
+  "Choose your service and fill in the booking form.",
+  "Specify your child's age for the right baby seat.",
+  "Select your preferred vehicle for your family.",
+  "Receive a confirmation and enjoy your safe ride."
+];
+
+const commonRequests = [
+  "Early morning or late-night airport pickups",
+  "Multiple child seats for larger families",
+  "Assistance with heavy strollers and luggage",
+  "Transfers to regional NSW and outer suburbs"
+];
+
+const cruiseTerminals = [
+  {
+    title: "Overseas Passenger Terminal",
+    subtitle: "Circular Quay, The Rocks",
+    image: "https://images.unsplash.com/photo-1599640842225-85d111c60e6b?auto=format&fit=crop&q=80&w=1000",
+    tag: "Circular Quay"
+  },
+  {
+    title: "White Bay Cruise Terminal",
+    subtitle: "James Craig Rd, Rozelle",
+    image: "https://images.unsplash.com/photo-1544061807-68b20dbb6be6?auto=format&fit=crop&q=80&w=1500",
+    tag: "Rozelle"
+  }
+];
+
 // ==========================================
 // COMPONENT
 // ==========================================
