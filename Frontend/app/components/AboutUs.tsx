@@ -28,7 +28,7 @@ export default function AboutUs() {
   return (
     <div className="about-page" id="about-page">
       {/* Hero */}
-      <section className="about-hero" id="about-hero">
+      <section className="about-hero animate-fade-in" id="about-hero">
         <div className="about-hero-content">
           <h1 className="about-hero-title">
             Your Trusted <span className="heading-highlight">Transport Partner</span> Across Australia
@@ -45,7 +45,7 @@ export default function AboutUs() {
       {/* About Section */}
       <section className="about-section" id="about-section">
         <div className="about-section-container">
-          <div className="about-text">
+          <div className="about-text reveal reveal-up">
             <h2 className="about-text-title">About <span className="heading-highlight">SquareConnect</span></h2>
             <p className="about-text-para">
               SquareConnect is a Australian transport company committed
@@ -72,7 +72,7 @@ export default function AboutUs() {
               SquareConnect is the smarter way to travel.
             </p>
           </div>
-          <div className="about-image" id="about-image">
+          <div className="about-image reveal reveal-scale" id="about-image">
             <div className="about-image-placeholder">
               <span className="about-image-icon">🚗</span>
               <span className="about-image-label">SquareConnect Image</span>
@@ -84,10 +84,10 @@ export default function AboutUs() {
       {/* Why Choose Us */}
       <section className="about-highlights" id="about-highlights">
         <div className="about-highlights-container">
-          <h2 className="about-highlights-title">Why Choose <span className="heading-highlight">SquareConnect?</span></h2>
+          <h2 className="about-highlights-title reveal reveal-up">Why Choose <span className="heading-highlight">SquareConnect?</span></h2>
           <div className="about-highlights-grid">
-            {highlights.map((item) => (
-              <div className="highlight-card" key={item.title} id={`highlight-${item.title.toLowerCase().replace(/\s/g, "-")}`}>
+            {highlights.map((item, index) => (
+              <div className={`highlight-card reveal reveal-scale delay-${(index + 1) * 100}`} key={item.title} id={`highlight-${item.title.toLowerCase().replace(/\s/g, "-")}`}>
                 <div className="highlight-icon">
                   <item.icon size={28} />
                 </div>

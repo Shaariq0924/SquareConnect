@@ -36,6 +36,8 @@ export default function RootLayout({
         <BackToTop />
         <Chatbot />
       </body>
+
     </html>
   );
 }
+

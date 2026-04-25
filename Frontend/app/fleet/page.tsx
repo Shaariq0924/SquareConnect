@@ -66,28 +66,11 @@ const vehicleRoster = [
 ];
 
 export default function FleetPage() {
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <main className="fleet-page w-full">
       {/* HERO SECTION */}
       <section className="fleet-hero">
-        <div className="fleet-hero-container animate-on-scroll">
+        <div className="fleet-hero-container animate-fade-in">
           <h1 className="fleet-title">Premium Vehicles<br/>for <span className="heading-highlight">Family Ride</span></h1>
           <p className="fleet-description">
             At SquareConnect, we know each journey is unique, so our fleet is designed to suit families of different sizes. From school runs to airport transfers, our vehicles include baby seat options for comfortable family travel.
@@ -97,7 +80,7 @@ export default function FleetPage() {
 
       {/* VEHICLES GRID */}
       <section className="fleet-grid-section">
-        <div className="fleet-grid-container animate-on-scroll">
+        <div className="fleet-grid-container reveal reveal-up">
           <div className="fleet-grid-header">
             <h2>Choose Your <span className="heading-highlight">Perfect Vehicle</span></h2>
             <p>Choose from our range of vehicles, maintained for comfort and equipped with baby seat options suited to your family&apos;s needs.</p>
@@ -107,8 +90,7 @@ export default function FleetPage() {
             {vehicleRoster.map((vehicle, i) => (
               <div 
                 key={vehicle.id} 
-                className="fleet-vehicle-card animate-on-scroll" 
-                style={{ transitionDelay: `${i * 0.15}s` }}
+                className={`fleet-vehicle-card reveal reveal-scale delay-${(i + 1) * 100}`} 
               >
                 <div className="fleet-vehicle-title">{vehicle.title}</div>
                 <div className="fleet-vehicle-image">
@@ -145,3 +127,4 @@ export default function FleetPage() {
     </main>
   );
 }
+

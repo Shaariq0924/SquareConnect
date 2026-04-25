@@ -4,6 +4,7 @@ import "../styles/footer.css";
 
 const servicesLinks = [
   { name: "Airport Transfers", href: "/services/Airport-Transfer" },
+  { name: "Cruise Transfer", href: "/services/Cruise-Transfer" },
   { name: "Day Tours", href: "/services/Day-Tours" },
   { name: "Hotel & Tourist", href: "/services/Hotel-&-Tourist" },
   { name: "Hospital Transfers", href: "/services/Hosiptal-Transfer" },
@@ -13,7 +14,7 @@ const quickLinks = [
   { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
   { name: "Portfolio", href: "/portfolio" },
-  { name: "Blog", href: "/blog" },
+  { name: "Policies", href: "/terms" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -74,7 +75,7 @@ export default function Footer() {
       {/* Footer Columns */}
       <div className="footer-columns" id="footer-columns">
         <div className="footer-columns-container">
-          <div className="footer-col">
+          <div className="footer-col reveal reveal-up">
             <h4 className="footer-col-title">Our Services</h4>
             <ul className="footer-col-links">
               {servicesLinks.map((link) => (
@@ -85,7 +86,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="footer-col">
+          <div className="footer-col reveal reveal-up delay-100">
             <h4 className="footer-col-title">Quick Links</h4>
             <ul className="footer-col-links">
               {quickLinks.map((link) => (
@@ -96,7 +97,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="footer-col">
+          <div className="footer-col reveal reveal-up delay-200">
             <h4 className="footer-col-title">Service Areas</h4>
             <ul className="footer-col-links">
               {serviceAreas.map((area) => (
@@ -108,7 +109,7 @@ export default function Footer() {
           </div>
 
           {/* Map Embed */}
-          <div className="footer-col footer-map-col" id="footer-map">
+          <div className="footer-col footer-map-col reveal reveal-scale delay-300" id="footer-map">
             <div className="footer-map-wrapper">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424146.10282847364!2d150.65178895!3d-33.847927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129838f39a743f%3A0x3017d681632a850!2sSydney%20NSW%2C%20Australia!5e0!3m2!1sen!2sin!4v1711600000000!5m2!1sen!2sin"

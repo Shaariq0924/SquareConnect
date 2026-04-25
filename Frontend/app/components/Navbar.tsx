@@ -44,8 +44,31 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    // Scroll Reveal Observer
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-visible");
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    const initReveals = () => {
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+    };
+
+    initReveals();
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Check for new elements periodically (for dynamic content)
+    const timer = setInterval(initReveals, 1000);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      revealObserver.disconnect();
+      clearInterval(timer);
+    };
   }, []);
 
   const toggleTheme = () => {
@@ -69,7 +92,7 @@ export default function Navbar() {
 
           {/* Desktop Nav Links — Centered */}
           <ul className="navbar-links" id="navbar-links">
-            {navLinks.map((link) =>
+            {navLinks.map((link, i) =>
               link.dropdown ? (
                 <li
                   key={link.name}
@@ -85,21 +108,32 @@ export default function Navbar() {
                     />
                   </button>
                   <ul className={`dropdown-menu ${servicesOpen ? "dropdown-open" : ""}`}>
-                    {link.dropdown.map((subLink) => (
-                      <li key={subLink.name}>
+                    {link.dropdown.map((subLink, subI) => (
+                      <motion.li 
+                        key={subLink.name}
+                        initial={false}
+                        animate={servicesOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                        transition={{ delay: servicesOpen ? 0.05 * subI : 0 }}
+                      >
                         <Link href={subLink.href} className="dropdown-link" id={`nav-${subLink.name.toLowerCase().replace(/\s/g, "-")}`}>
                           {subLink.name}
                         </Link>
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                 </li>
               ) : (
-                <li key={link.name} className="nav-item">
+                <motion.li 
+                  key={link.name} 
+                  className="nav-item"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i }}
+                >
                   <Link href={link.href} className="nav-link" id={`nav-${link.name.toLowerCase().replace(/\s/g, "-")}`}>
                     {link.name}
                   </Link>
-                </li>
+                </motion.li>
               )
             )}
           </ul>

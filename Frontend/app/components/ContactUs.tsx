@@ -65,7 +65,7 @@ export default function ContactUs() {
   return (
     <div className="contact-page" id="contact-page">
       {/* Hero Banner */}
-      <section className="contact-hero" id="contact-hero">
+      <section className="contact-hero animate-fade-in" id="contact-hero">
         <div className="contact-hero-content">
           <h1 className="contact-hero-title">Contact <span className="heading-highlight">SquareConnect</span></h1>
           <p className="contact-hero-subtitle">
@@ -78,11 +78,11 @@ export default function ContactUs() {
       <section className="contact-body" id="contact-body">
         <div className="contact-body-container">
           {/* Left - Contact Info */}
-          <div className="contact-info" id="contact-info">
+          <div className="contact-info reveal reveal-up" id="contact-info">
             <h2 className="contact-info-title"><span className="heading-highlight">Contact</span> Us</h2>
 
             <div className="contact-info-cards">
-              <div className="contact-card" id="contact-card-phone">
+              <div className="contact-card reveal reveal-scale delay-100" id="contact-card-phone">
                 <div className="contact-card-icon">
                   <Phone size={22} />
                 </div>
@@ -92,7 +92,7 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="contact-card" id="contact-card-email">
+              <div className="contact-card reveal reveal-scale delay-200" id="contact-card-email">
                 <div className="contact-card-icon">
                   <Mail size={22} />
                 </div>
@@ -104,7 +104,7 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="contact-card" id="contact-card-location">
+              <div className="contact-card reveal reveal-scale delay-300" id="contact-card-location">
                 <div className="contact-card-icon">
                   <MapPin size={22} />
                 </div>
@@ -114,7 +114,7 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="contact-card" id="contact-card-hours">
+              <div className="contact-card reveal reveal-scale delay-400" id="contact-card-hours">
                 <div className="contact-card-icon">
                   <Clock size={22} />
                 </div>
@@ -126,7 +126,7 @@ export default function ContactUs() {
             </div>
           </div>
 
-          <div className="contact-form-wrapper" id="contact-form-wrapper">
+          <div className="contact-form-wrapper reveal reveal-up delay-200" id="contact-form-wrapper">
             <h2 className="contact-form-title">Get In <span className="heading-highlight">Touch</span></h2>
             {successMsg && <div className="p-4 mb-4 text-green-800 bg-green-100 rounded-lg">{successMsg}</div>}
             {errorMsg && <div className="p-4 mb-4 text-red-800 bg-red-100 rounded-lg">{errorMsg}</div>}
